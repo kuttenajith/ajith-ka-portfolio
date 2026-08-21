@@ -6,7 +6,7 @@
   --line: #2a302c;
   --accent: #e0a06a;
   --accent-2: #c9844c;
-  --max: 1120px;
+  --page-pad: clamp(16px, 4vw, 72px);
   --sans: "Manrope", system-ui, sans-serif;
   --display: "Syne", "Manrope", sans-serif;
 }
@@ -71,7 +71,8 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 16px 28px;
+  width: 100%;
+  padding: 16px var(--page-pad);
   background: rgb(14 17 16 / 88%);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -127,16 +128,18 @@ a {
 }
 
 .wrap {
-  width: min(var(--max), calc(100% - 48px));
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-inline: var(--page-pad);
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(240px, 340px);
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, min(28vw, 440px));
   align-items: center;
-  gap: 64px;
-  padding: 72px 0 80px;
+  gap: clamp(28px, 4vw, 80px);
+  padding: clamp(40px, 6vw, 88px) 0 clamp(48px, 7vw, 96px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -153,15 +156,15 @@ a {
   margin: 0;
   font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(44px, 7vw, 78px);
+  font-size: clamp(40px, 6.4vw, 96px);
   line-height: 0.92;
   letter-spacing: -0.045em;
 }
 
 .lede {
-  max-width: 640px;
+  max-width: 70ch;
   margin: 28px 0 0;
-  font-size: clamp(18px, 2.2vw, 24px);
+  font-size: clamp(17px, 1.35vw, 22px);
   color: #d8d0c2;
 }
 
@@ -180,8 +183,9 @@ a {
 
 .portrait {
   margin: 0;
-  justify-self: end;
-  width: min(340px, 100%);
+  justify-self: stretch;
+  width: 100%;
+  max-width: 440px;
 }
 
 .portrait__stage {
@@ -349,7 +353,7 @@ section {
   font-family: var(--display);
   font-weight: 800;
   letter-spacing: -0.04em;
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(28px, 4.2vw, 56px);
   line-height: 1.05;
   margin: 0 0 16px;
 }
@@ -379,7 +383,7 @@ section {
 }
 
 .article {
-  max-width: 720px;
+  max-width: none;
 }
 
 .article h2 {
@@ -392,6 +396,7 @@ section {
 .article p,
 .article li {
   color: #d8d0c2;
+  max-width: 85ch;
 }
 
 .article ol,
@@ -450,8 +455,8 @@ section {
 
 .projects {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
 }
 
 .project {
@@ -500,6 +505,12 @@ section {
   color: var(--accent);
 }
 
+.impact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
+}
+
 .stat {
   background: var(--bg-2);
   border: 1px solid var(--line);
@@ -537,8 +548,8 @@ section {
 
 .job {
   display: grid;
-  grid-template-columns: 210px 1fr;
-  gap: 28px;
+  grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
   padding: 28px 0;
   border-top: 1px solid var(--line);
 }
@@ -581,8 +592,8 @@ section {
 
 .layers {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
 }
 
 .layer {
@@ -638,7 +649,7 @@ section {
 .about-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 48px;
+  gap: clamp(24px, 4vw, 64px);
 }
 
 .about-grid p {
@@ -685,27 +696,33 @@ section {
 }
 
 @media (max-width: 860px) {
+  .nav {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
   .nav-links {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    font-size: 11px;
+    justify-content: flex-start;
   }
 
   .hero,
   .section-head,
   .job,
-  .impact,
-  .projects,
-  .layers,
   .about-grid {
     grid-template-columns: 1fr;
   }
 
   .portrait {
-    justify-self: start;
-    max-width: 320px;
+    justify-self: stretch;
+    max-width: 100%;
   }
 
   .hero {
-    padding-top: 56px;
+    padding-top: 40px;
   }
 
   .stat {

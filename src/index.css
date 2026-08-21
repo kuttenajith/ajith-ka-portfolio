@@ -6,9 +6,10 @@
   --line: #2a302c;
   --accent: #e0a06a;
   --accent-2: #c9844c;
-  --page-pad: clamp(16px, 4vw, 72px);
-  --sans: "Manrope", system-ui, sans-serif;
-  --display: "Syne", "Manrope", sans-serif;
+  --page-pad: clamp(20px, 3.5vw, 40px);
+  --content: 1180px;
+  --sans: "Source Sans 3", system-ui, sans-serif;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
 }
 
 * {
@@ -17,6 +18,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 .scroll-progress {
@@ -33,11 +35,12 @@ html {
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
   line-height: 1.55;
-  letter-spacing: -0.011em;
 }
 
 ::selection {
@@ -72,7 +75,7 @@ a {
   justify-content: space-between;
   gap: 16px;
   width: 100%;
-  padding: 16px var(--page-pad);
+  padding: 16px max(var(--page-pad), calc((100% - var(--content)) / 2 + var(--page-pad)));
   background: rgb(14 17 16 / 88%);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -80,9 +83,9 @@ a {
 
 .mark {
   font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-decoration: none;
 }
 
@@ -93,7 +96,7 @@ a {
   margin: 0;
   padding: 0;
   font-size: 13px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -129,17 +132,17 @@ a {
 
 .wrap {
   width: 100%;
-  max-width: none;
-  margin: 0;
+  max-width: var(--content);
+  margin-inline: auto;
   padding-inline: var(--page-pad);
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(240px, min(28vw, 440px));
+  grid-template-columns: minmax(0, 1fr) 300px;
   align-items: center;
-  gap: clamp(28px, 4vw, 80px);
-  padding: clamp(40px, 6vw, 88px) 0 clamp(48px, 7vw, 96px);
+  gap: 40px;
+  padding: 56px 0 64px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -152,19 +155,23 @@ a {
   font-weight: 600;
 }
 
+.hero-copy {
+  min-width: 0;
+}
+
 .hero h1 {
   margin: 0;
   font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(40px, 6.4vw, 96px);
-  line-height: 0.92;
-  letter-spacing: -0.045em;
+  font-weight: 600;
+  font-size: clamp(36px, 4.6vw, 56px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .lede {
-  max-width: 70ch;
-  margin: 28px 0 0;
-  font-size: clamp(17px, 1.35vw, 22px);
+  max-width: 42rem;
+  margin: 20px 0 0;
+  font-size: 18px;
   color: #d8d0c2;
 }
 
@@ -183,9 +190,10 @@ a {
 
 .portrait {
   margin: 0;
-  justify-self: stretch;
+  justify-self: end;
   width: 100%;
-  max-width: 440px;
+  max-width: 300px;
+  overflow: hidden;
 }
 
 .portrait__stage {
@@ -194,7 +202,7 @@ a {
 
 .portrait__offset {
   position: absolute;
-  inset: 22px -18px -18px 22px;
+  inset: 16px 8px -8px 16px;
   border: 1px solid var(--accent);
   pointer-events: none;
 }
@@ -328,8 +336,8 @@ section {
 .section-head h2 {
   margin: 0;
   font-family: var(--display);
-  font-size: 34px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 
@@ -351,10 +359,10 @@ section {
 .page-head h1,
 .article h1 {
   font-family: var(--display);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  font-size: clamp(28px, 4.2vw, 56px);
-  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.2;
   margin: 0 0 16px;
 }
 
@@ -527,8 +535,8 @@ section {
 .stat strong {
   display: block;
   font-family: var(--display);
-  font-size: clamp(40px, 5vw, 56px);
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--accent);
@@ -717,8 +725,8 @@ section {
   }
 
   .portrait {
-    justify-self: stretch;
-    max-width: 100%;
+    justify-self: start;
+    max-width: 280px;
   }
 
   .hero {

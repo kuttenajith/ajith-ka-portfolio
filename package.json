@@ -3,10 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "description": "Personal portfolio of Ajith K A — Senior Frontend Engineer",
-  "homepage": "https://kuttenajith.github.io/portfolio/",
+  "homepage": "https://kuttenajith.github.io/ajith-ka-portfolio/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuttenajith/portfolio.git"
+    "url": "https://github.com/kuttenajith/ajith-ka-portfolio.git"
   },
   "type": "module",
   "scripts": {

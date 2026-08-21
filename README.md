@@ -2,7 +2,8 @@
 
 Personal site of **Ajith K A**, Senior Frontend Engineer (React, Next.js, TypeScript).
 
-**Live:** [kuttenajith.github.io/portfolio](https://kuttenajith.github.io/portfolio/)  
+**Live:** [kuttenajith.github.io/ajith-ka-portfolio](https://kuttenajith.github.io/ajith-ka-portfolio/)  
+**Repo:** [github.com/kuttenajith/ajith-ka-portfolio](https://github.com/kuttenajith/ajith-ka-portfolio)  
 **Profile:** [github.com/kuttenajith](https://github.com/kuttenajith)
 
 This is a single-page portfolio: who I am, measured impact, work history, how I build, and how to reach me. Copy comes from my current resumes. It is a personal project, not an employer repo.
@@ -33,7 +34,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5174/portfolio/](http://localhost:5174/portfolio/)
+Open [http://localhost:5174/ajith-ka-portfolio/](http://localhost:5174/ajith-ka-portfolio/)
 
 ```bash
 npm run build
@@ -42,7 +43,7 @@ npm run preview
 
 ## Deploy
 
-Pushes to `main` build the site and publish it on GitHub Pages (`/portfolio/`).
+Pushes to `main` build the site and publish it on GitHub Pages (`/ajith-ka-portfolio/`).
 
 ## Contact
 

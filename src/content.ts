@@ -152,16 +152,6 @@ export const education = {
   grade: "Grade A",
 };
 
-export const posts = [
-  {
-    slug: "lighthouse-93",
-    title: "How a production frontend reached a 93.8% Lighthouse performance score",
-    date: "August 2026",
-    summary:
-      "The work that actually moved Core Web Vitals: smaller initial JavaScript, deferred UI, honest measurement, and what not to optimize first.",
-  },
-];
-
 export const offer = {
   name: "Frontend health check",
   length: "Two working days",

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { posts } from "./content";
+import { posts } from "./articles";
 
 export function Blog() {
   return (
@@ -15,7 +15,9 @@ export function Blog() {
       <div className="wrap">
         {posts.map((post) => (
           <article className="post-card" key={post.slug}>
-            <p className="kicker">{post.date}</p>
+            <p className="kicker">
+              {post.date} · {post.topic}
+            </p>
             <h2>
               <Link to={`/blog/${post.slug}`}>{post.title}</Link>
             </h2>

@@ -162,27 +162,45 @@ export function App() {
       </header>
 
       <main id="top">
-        <div className="wrap hero hero-in">
-          <p className="kicker">
-            {profile.role} · {profile.location}
-          </p>
-          <h1>{profile.name}</h1>
-          <p className="lede">{profile.headline}</p>
-          <p className="meta">React · Next.js · TypeScript · Frontend architecture · 2018 — present</p>
-          <div className="actions">
-            <a className="btn primary" href={`mailto:${profile.email}`}>
-              Contact
-            </a>
-            <a className="btn" href={profile.resume} download>
-              Download resume
-            </a>
-            <a className="btn" href={profile.github} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            <a className="btn" href={profile.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
+        <div className="wrap hero">
+          <div className="hero-copy">
+            <p className="kicker">
+              {profile.role} · {profile.location}
+            </p>
+            <h1>{profile.name}</h1>
+            <p className="lede">{profile.headline}</p>
+            <p className="meta">React · Next.js · TypeScript · Frontend architecture · 2018 — present</p>
+            <div className="actions">
+              <a className="btn primary" href={`mailto:${profile.email}`}>
+                Contact
+              </a>
+              <a className="btn" href={profile.resume} download>
+                Download resume
+              </a>
+              <a className="btn" href={profile.github} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a className="btn" href={profile.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </div>
           </div>
+          <figure className="portrait" data-reveal>
+            <div className="portrait__stage">
+              <span className="portrait__offset" aria-hidden="true" />
+              <div className="portrait__clip">
+                <img src={profile.photo} alt="Ajith K A, Senior Frontend Engineer" />
+              </div>
+              <span className="portrait__tick portrait__tick--tl" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--tr" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--bl" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--br" aria-hidden="true" />
+            </div>
+            <figcaption>
+              <span>Currently</span>
+              {profile.currentRole}
+            </figcaption>
+          </figure>
         </div>
 
         <section>

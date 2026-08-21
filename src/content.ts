@@ -8,7 +8,8 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/ajith-k-a-18b71713b",
   github: "https://github.com/kuttenajith",
   resume: `${import.meta.env.BASE_URL}Ajith-KA-Senior-Frontend.pdf`,
-  resumeAlt: `${import.meta.env.BASE_URL}Ajith-KA-Resume.pdf`,
+  photo: `${import.meta.env.BASE_URL}ajith-ka.jpg`,
+  currentRole: "SDE II — Frontend, ARRise powering Pragmatic Play",
   headline:
     "Senior Frontend Engineer specializing in React, Next.js, and TypeScript, with experience in frontend architecture, performance optimization, and team leadership.",
   summary:

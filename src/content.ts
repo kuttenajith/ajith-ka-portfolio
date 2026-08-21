@@ -5,7 +5,7 @@ export const profile = {
   email: "ajithkutten1998@gmail.com",
   phone: "+91 79049 49080",
   phoneHref: "tel:+917904949080",
-  linkedin: "https://www.linkedin.com/in/ajith-k-a-18b71713b",
+  linkedin: "https://www.linkedin.com/in/ajith-amarnath-18b71713b/",
   github: "https://github.com/kuttenajith",
   resume: `${import.meta.env.BASE_URL}Ajith-KA-Senior-Frontend.pdf`,
   photo: `${import.meta.env.BASE_URL}ajith-ka.jpg`,
@@ -109,6 +109,41 @@ export const practice = {
     "Cross-functional delivery with product, UX, QA, backend, and DevOps teams.",
   ],
 };
+
+export const projects = [
+  {
+    name: "Ajith UI",
+    tag: "Design system",
+    summary:
+      "Reusable React and TypeScript component library: design tokens, accessible primitives, and a live gallery.",
+    repo: "https://github.com/kuttenajith/ajith-ui",
+    live: "https://kuttenajith.github.io/ajith-ui/",
+  },
+  {
+    name: "Interview Board",
+    tag: "Product architecture",
+    summary:
+      "Hiring pipeline board with candidate records, column workflow, search, and local persistence.",
+    repo: "https://github.com/kuttenajith/interview-board",
+    live: "https://kuttenajith.github.io/interview-board/",
+  },
+  {
+    name: "Live Ops Board",
+    tag: "Real-time",
+    summary:
+      "Operations dashboard with live metrics, operator presence, and WebSocket reconnect handling.",
+    repo: "https://github.com/kuttenajith/live-ops-board",
+    live: "https://kuttenajith.github.io/live-ops-board/",
+  },
+  {
+    name: "MFE Shell",
+    tag: "Micro-frontends",
+    summary:
+      "Host application that loads independent remote apps over iframe + postMessage, with a shared theme contract.",
+    repo: "https://github.com/kuttenajith/mfe-shell",
+    live: "https://kuttenajith.github.io/mfe-shell/",
+  },
+];
 
 export const education = {
   degree: "B.E. Computer Science Engineering",

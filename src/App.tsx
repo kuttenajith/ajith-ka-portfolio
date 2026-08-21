@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { education, experience, impact, practice, profile } from "./content";
+import { education, experience, impact, practice, profile, projects } from "./content";
 
 const sections = [
+  { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
   { id: "about", label: "About" },
@@ -229,6 +230,40 @@ export function App() {
           </div>
         </section>
 
+        <section id="projects">
+          <div className="wrap">
+            <div className="section-head" data-reveal>
+              <p className="kicker">Projects</p>
+              <div>
+                <h2>Selected work</h2>
+                <p>Public repositories prepared for technical interviews. Each includes source and a live demo.</p>
+              </div>
+            </div>
+            <div className="projects">
+              {projects.map((item, i) => (
+                <article
+                  className="project"
+                  data-reveal
+                  key={item.name}
+                  style={{ "--d": `${i * 90}ms` } as CSSProperties}
+                >
+                  <p className="project__tag">{item.tag}</p>
+                  <h3>{item.name}</h3>
+                  <p>{item.summary}</p>
+                  <div className="project__links">
+                    <a href={item.live} target="_blank" rel="noreferrer">
+                      Live demo
+                    </a>
+                    <a href={item.repo} target="_blank" rel="noreferrer">
+                      GitHub
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="experience">
           <div className="wrap">
             <div className="section-head" data-reveal>
@@ -323,7 +358,7 @@ export function App() {
                 github.com/kuttenajith
               </a>
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                linkedin.com/in/ajith-k-a-18b71713b
+                linkedin.com/in/ajith-amarnath-18b71713b
               </a>
               <a href={profile.resume} download>
                 Resume (PDF)

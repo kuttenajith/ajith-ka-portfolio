@@ -48,5 +48,5 @@ Pushes to `main` build the site and publish it on GitHub Pages (`/ajith-ka-portf
 ## Contact
 
 - Email: [ajithkutten1998@gmail.com](mailto:ajithkutten1998@gmail.com)
-- LinkedIn: [ajith-k-a-18b71713b](https://www.linkedin.com/in/ajith-k-a-18b71713b)
+- LinkedIn: [ajith-amarnath-18b71713b](https://www.linkedin.com/in/ajith-amarnath-18b71713b/)
 - GitHub: [kuttenajith](https://github.com/kuttenajith)

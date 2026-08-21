@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { education, experience, impact, practice, profile } from "./content";
 
 const sections = [
-  { id: "work", label: "Work" },
-  { id: "practice", label: "Practice" },
+  { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
   { id: "about", label: "About" },
 ];
 
 export function App() {
-  const [active, setActive] = useState("work");
+  const [active, setActive] = useState("experience");
 
   useEffect(() => {
     const nodes = sections
@@ -31,8 +31,8 @@ export function App() {
 
   return (
     <>
-      <a className="skip" href="#work">
-        Skip to work
+      <a className="skip" href="#experience">
+        Skip to experience
       </a>
       <header className="nav">
         <a className="mark" href="#top">
@@ -71,7 +71,7 @@ export function App() {
           <p className="meta">React · Next.js · TypeScript · Frontend architecture · 2018 — present</p>
           <div className="actions">
             <a className="btn primary" href={`mailto:${profile.email}`}>
-              Email me
+              Contact
             </a>
             <a className="btn" href={profile.resume} download>
               Download resume
@@ -88,10 +88,10 @@ export function App() {
         <section>
           <div className="wrap">
             <div className="section-head">
-              <p className="kicker">Impact</p>
+              <p className="kicker">Highlights</p>
               <div>
-                <h2>Numbers I can stand behind</h2>
-                <p>Pulled from both resumes. Same story, measured outcomes.</p>
+                <h2>Key results</h2>
+                <p>Selected outcomes from professional experience.</p>
               </div>
             </div>
             <div className="impact">
@@ -106,13 +106,13 @@ export function App() {
           </div>
         </section>
 
-        <section id="work">
+        <section id="experience">
           <div className="wrap">
             <div className="section-head">
               <p className="kicker">Experience</p>
               <div>
-                <h2>Where the work happened</h2>
-                <p>High-traffic products, enterprise modules, and the path from IC to module lead.</p>
+                <h2>Professional experience</h2>
+                <p>Roles spanning high-traffic platforms, enterprise modules, and frontend leadership.</p>
               </div>
             </div>
             {experience.map((job) => (
@@ -132,13 +132,13 @@ export function App() {
           </div>
         </section>
 
-        <section id="practice">
+        <section id="skills">
           <div className="wrap">
             <div className="section-head">
-              <p className="kicker">Practice</p>
+              <p className="kicker">Skills</p>
               <div>
-                <h2>How I build</h2>
-                <p>Interface, architecture, and delivery as one system — not a tool list dumped on a page.</p>
+                <h2>Technical skills</h2>
+                <p>Frontend, architecture, and delivery capabilities used in production systems.</p>
               </div>
             </div>
             <div className="layers">
@@ -166,7 +166,7 @@ export function App() {
             <div className="section-head">
               <p className="kicker">About</p>
               <div>
-                <h2>Short version</h2>
+                <h2>Profile</h2>
               </div>
             </div>
             <div className="about-grid">
@@ -190,8 +190,8 @@ export function App() {
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 linkedin.com/in/ajith-k-a-18b71713b
               </a>
-              <a href={profile.resumeAlt} download>
-                Alternate resume (PDF)
+              <a href={profile.resume} download>
+                Resume (PDF)
               </a>
             </div>
           </div>
@@ -200,7 +200,7 @@ export function App() {
 
       <footer className="wrap foot">
         <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span>Personal site · not affiliated with employer repos</span>
+        <span>Senior Frontend Engineer</span>
       </footer>
     </>
   );

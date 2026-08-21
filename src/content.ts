@@ -10,26 +10,26 @@ export const profile = {
   resume: `${import.meta.env.BASE_URL}Ajith-KA-Senior-Frontend.pdf`,
   resumeAlt: `${import.meta.env.BASE_URL}Ajith-KA-Resume.pdf`,
   headline:
-    "I design React and TypeScript systems that stay fast, reusable, and shippable under real production load.",
+    "Senior Frontend Engineer specializing in React, Next.js, and TypeScript, with experience in frontend architecture, performance optimization, and team leadership.",
   summary:
-    "Frontend engineer since 2018. I own architecture, component systems, and delivery — from requirement to production — and have led a team of six. Strongest in React, Next.js, TypeScript, SSR, micro-frontends, and performance work measured with Lighthouse and Core Web Vitals. Cloud delivery across GCP, AWS, and Azure.",
+    "Frontend engineer with professional experience since 2018. Responsible for architecture, reusable component systems, and delivery from requirements through production. Has led a team of six engineers. Core strengths include React, Next.js, TypeScript, server-side rendering, micro-frontends, and performance optimization using Lighthouse and Core Web Vitals. Cloud and DevOps experience across GCP, AWS, and Azure.",
 };
 
 export const impact = [
   {
     value: "93.8%",
-    label: "Lighthouse performance",
-    detail: "Bundle splitting, lazy loading, and Core Web Vitals work — not a one-off audit screenshot.",
+    label: "Lighthouse performance score",
+    detail: "Achieved through bundle optimization, lazy loading, and Core Web Vitals improvements.",
   },
   {
     value: "94%",
-    label: "Conversion lift",
-    detail: "UX-led redesign paired with faster pages. Product outcome, not just a prettier UI.",
+    label: "Conversion improvement",
+    detail: "Result of a UX-focused redesign combined with faster page performance.",
   },
   {
     value: "6",
     label: "Engineers led",
-    detail: "Mentoring, reviews, sprint planning, and architecture standards that the team could actually follow.",
+    detail: "Mentoring, code reviews, sprint planning, and architecture standards for the frontend team.",
   },
 ];
 
@@ -41,8 +41,8 @@ export const experience = [
     points: [
       "Lead frontend architecture on React and TypeScript for high-traffic, real-time products.",
       "Build reusable component libraries used across enterprise applications.",
-      "Own performance, maintainability, and code quality — not just feature tickets.",
-      "Ship with product, QA, design, and backend. Support production releases and troubleshooting.",
+      "Drive performance, maintainability, and code quality standards.",
+      "Collaborate with product, QA, design, and backend teams. Support production releases and troubleshooting.",
     ],
   },
   {
@@ -52,7 +52,7 @@ export const experience = [
     points: [
       "Led and mentored six frontend engineers through delivery of enterprise modules.",
       "Set technical roadmaps, architecture standards, and review culture.",
-      "Translated stakeholder requirements into work the team could estimate and finish.",
+      "Translated stakeholder requirements into structured technical plans and delivery estimates.",
       "Ran sprint planning, estimation, and delivery tracking.",
     ],
   },
@@ -72,9 +72,9 @@ export const experience = [
     company: "Zencode Group",
     dates: "Dec 2018 — Apr 2021",
     points: [
-      "Shipped responsive applications with accessibility and UX as constraints, not extras.",
-      "Contributed to a 94% conversion lift through UI modernization.",
-      "Tuned load performance so the redesign was actually usable.",
+      "Developed responsive web applications aligned with accessibility and UX standards.",
+      "Contributed to a 94% improvement in conversion metrics through UI modernization.",
+      "Implemented performance optimization to improve page load times.",
     ],
   },
 ];
@@ -102,10 +102,10 @@ export const practice = {
     },
   ],
   focus: [
-    "Technical ownership from analysis through production.",
-    "Performance as a product feature: Lighthouse, lazy loading, code splitting.",
-    "Systems other engineers can extend — not one-off pages.",
-    "Cross-functional delivery with product, UX, QA, backend, and DevOps.",
+    "Technical ownership from requirement analysis through production deployment.",
+    "Performance optimization using Lighthouse, lazy loading, and code splitting.",
+    "Reusable frontend systems and component libraries for enterprise applications.",
+    "Cross-functional delivery with product, UX, QA, backend, and DevOps teams.",
   ],
 };
 

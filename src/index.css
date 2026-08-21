@@ -703,6 +703,52 @@ section {
   gap: 16px;
 }
 
+@media (min-width: 1600px) {
+  :root {
+    --content: 1420px;
+    --page-pad: 48px;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 56px;
+    padding: 64px 0 72px;
+  }
+
+  .portrait {
+    max-width: 340px;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+  }
+
+  .section-head h2 {
+    font-size: 36px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --content: 1600px;
+    --page-pad: 56px;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+
+  .portrait {
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    --content: 1760px;
+  }
+}
+
 @media (max-width: 860px) {
   .nav {
     flex-wrap: wrap;

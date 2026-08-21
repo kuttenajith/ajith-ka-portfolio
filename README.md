@@ -6,18 +6,16 @@ Personal site of **Ajith K A**, Senior Frontend Engineer (React, Next.js, TypeSc
 **Repo:** [github.com/kuttenajith/ajith-ka-portfolio](https://github.com/kuttenajith/ajith-ka-portfolio)  
 **Profile:** [github.com/kuttenajith](https://github.com/kuttenajith)
 
-This is a single-page portfolio: who I am, measured impact, work history, how I build, and how to reach me. Copy comes from my current resumes. It is a personal project, not an employer repo.
+This is a personal site: profile, public projects, a blog, and a freelance offer. It is not an employer repo.
 
 ## What’s on the site
 
-| Section | What you’ll see |
+| Path | What you’ll see |
 |---|---|
-| Hero | Role, location, short positioning |
-| Impact | 93.8% Lighthouse, 94% conversion lift, team of 6 |
-| Work | ARRise / Pragmatic Play → Celsior → Tanisha → Zencode |
-| Practice | Interface, architecture, and delivery — not a dump of logos |
-| About | Education (KLN College of Engineering) and contact |
-| PDFs | Downloadable resumes in `/public` |
+| `/` | Profile, results, projects, experience |
+| `/blog` | Articles |
+| `/blog/lighthouse-93` | First article: Lighthouse 93.8% |
+| `/work-with-me` | Frontend health check offer |
 
 ## Stack
 

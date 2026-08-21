@@ -151,3 +151,34 @@ export const education = {
   dates: "2015 — 2019",
   grade: "Grade A",
 };
+
+export const posts = [
+  {
+    slug: "lighthouse-93",
+    title: "How a production frontend reached a 93.8% Lighthouse performance score",
+    date: "August 2026",
+    summary:
+      "The work that actually moved Core Web Vitals: smaller initial JavaScript, deferred UI, honest measurement, and what not to optimize first.",
+  },
+];
+
+export const offer = {
+  name: "Frontend health check",
+  length: "Two working days",
+  summary:
+    "A fixed-scope review of a React or Next.js application: performance, structure, and a written plan the team can execute without me in the room.",
+  includes: [
+    "Lighthouse and Core Web Vitals baseline on the real product URL",
+    "Bundle and route-level JavaScript review (what ships on first load vs later)",
+    "Component and state-structure notes: reuse, coupling, and risk",
+    "A written report with ordered actions: quick wins, then deeper work",
+    "A 60-minute walkthrough call with engineering or product",
+  ],
+  notIncluded: [
+    "Implementation of the full backlog inside the two days",
+    "Confidential employer systems or anything that cannot be shared legally",
+    "Mobile-native or backend-only work",
+  ],
+  howToStart:
+    "Email with the product URL, the stack (React / Next.js), and the outcome you want (speed, maintainability, or a hiring-readiness review). I reply with availability and a fixed fee after a short intro call.",
+};

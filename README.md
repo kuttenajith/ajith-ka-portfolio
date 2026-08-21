@@ -1,0 +1,51 @@
+# Ajith K A — Portfolio
+
+Personal site of **Ajith K A**, Senior Frontend Engineer (React, Next.js, TypeScript).
+
+**Live:** [kuttenajith.github.io/portfolio](https://kuttenajith.github.io/portfolio/)  
+**Profile:** [github.com/kuttenajith](https://github.com/kuttenajith)
+
+This is a single-page portfolio: who I am, measured impact, work history, how I build, and how to reach me. Copy comes from my current resumes. It is a personal project, not an employer repo.
+
+## What’s on the site
+
+| Section | What you’ll see |
+|---|---|
+| Hero | Role, location, short positioning |
+| Impact | 93.8% Lighthouse, 94% conversion lift, team of 6 |
+| Work | ARRise / Pragmatic Play → Celsior → Tanisha → Zencode |
+| Practice | Interface, architecture, and delivery — not a dump of logos |
+| About | Education (KLN College of Engineering) and contact |
+| PDFs | Downloadable resumes in `/public` |
+
+## Stack
+
+- React 19 + TypeScript
+- Vite
+- Plain CSS (no UI kit)
+
+All site copy is in [`src/content.ts`](src/content.ts). Change that file to update the page.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:5174/portfolio/](http://localhost:5174/portfolio/)
+
+```bash
+npm run build
+npm run preview
+```
+
+## Deploy
+
+Pushes to `main` build the site and publish it on GitHub Pages (`/portfolio/`).
+
+## Contact
+
+- Email: [ajithkutten1998@gmail.com](mailto:ajithkutten1998@gmail.com)
+- LinkedIn: [ajith-k-a-18b71713b](https://www.linkedin.com/in/ajith-k-a-18b71713b)
+- GitHub: [kuttenajith](https://github.com/kuttenajith)

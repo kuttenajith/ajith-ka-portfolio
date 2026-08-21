@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { education, experience, impact, practice, profile } from "./content";
 
 const sections = [
@@ -7,8 +7,107 @@ const sections = [
   { id: "about", label: "About" },
 ];
 
+function useScrollProgress() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const root = document.documentElement;
+      const max = root.scrollHeight - root.clientHeight;
+      setProgress(max > 0 ? root.scrollTop / max : 0);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return progress;
+}
+
+function useReveal() {
+  useEffect(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      nodes.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    nodes.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
+function MetricValue({ value }: { value: string }) {
+  const ref = useRef<HTMLElement>(null);
+  const [text, setText] = useState(value);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const match = value.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
+    if (!match || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setText(value);
+      return;
+    }
+
+    const target = Number(match[2]);
+    const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
+    const prefix = match[1];
+    const suffix = match[3];
+
+    const play = () => {
+      if (started.current) return;
+      started.current = true;
+      const duration = 1100;
+      const start = performance.now();
+
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - (1 - t) ** 3;
+        setText(`${prefix}${(target * eased).toFixed(decimals)}${suffix}`);
+        if (t < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          play();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return <strong ref={ref}>{text}</strong>;
+}
+
 export function App() {
   const [active, setActive] = useState("experience");
+  const progress = useScrollProgress();
+  useReveal();
 
   useEffect(() => {
     const nodes = sections
@@ -31,6 +130,7 @@ export function App() {
 
   return (
     <>
+      <div className="scroll-progress" style={{ transform: `scaleX(${progress})` }} />
       <a className="skip" href="#experience">
         Skip to experience
       </a>
@@ -62,7 +162,7 @@ export function App() {
       </header>
 
       <main id="top">
-        <div className="wrap hero">
+        <div className="wrap hero hero-in">
           <p className="kicker">
             {profile.role} · {profile.location}
           </p>
@@ -87,7 +187,7 @@ export function App() {
 
         <section>
           <div className="wrap">
-            <div className="section-head">
+            <div className="section-head" data-reveal>
               <p className="kicker">Highlights</p>
               <div>
                 <h2>Key results</h2>
@@ -95,9 +195,14 @@ export function App() {
               </div>
             </div>
             <div className="impact">
-              {impact.map((item) => (
-                <article className="stat" key={item.label}>
-                  <strong>{item.value}</strong>
+              {impact.map((item, i) => (
+                <article
+                  className="stat"
+                  data-reveal
+                  key={item.label}
+                  style={{ "--d": `${i * 110}ms` } as CSSProperties}
+                >
+                  <MetricValue value={item.value} />
                   <span>{item.label}</span>
                   <p>{item.detail}</p>
                 </article>
@@ -108,15 +213,20 @@ export function App() {
 
         <section id="experience">
           <div className="wrap">
-            <div className="section-head">
+            <div className="section-head" data-reveal>
               <p className="kicker">Experience</p>
               <div>
                 <h2>Professional experience</h2>
                 <p>Roles spanning high-traffic platforms, enterprise modules, and frontend leadership.</p>
               </div>
             </div>
-            {experience.map((job) => (
-              <article className="job" key={`${job.company}-${job.dates}`}>
+            {experience.map((job, i) => (
+              <article
+                className="job"
+                data-reveal
+                key={`${job.company}-${job.dates}`}
+                style={{ "--d": `${i * 90}ms` } as CSSProperties}
+              >
                 <div>
                   <h3>{job.role}</h3>
                   <p className="company">{job.company}</p>
@@ -134,7 +244,7 @@ export function App() {
 
         <section id="skills">
           <div className="wrap">
-            <div className="section-head">
+            <div className="section-head" data-reveal>
               <p className="kicker">Skills</p>
               <div>
                 <h2>Technical skills</h2>
@@ -142,8 +252,13 @@ export function App() {
               </div>
             </div>
             <div className="layers">
-              {practice.layers.map((layer) => (
-                <article className="layer" key={layer.title}>
+              {practice.layers.map((layer, i) => (
+                <article
+                  className="layer"
+                  data-reveal
+                  key={layer.title}
+                  style={{ "--d": `${i * 110}ms` } as CSSProperties}
+                >
                   <h3>{layer.title}</h3>
                   <ul>
                     {layer.items.map((item) => (
@@ -154,8 +269,10 @@ export function App() {
               ))}
             </div>
             <ul className="focus">
-              {practice.focus.map((item) => (
-                <li key={item}>{item}</li>
+              {practice.focus.map((item, i) => (
+                <li data-reveal key={item} style={{ "--d": `${i * 80}ms` } as CSSProperties}>
+                  {item}
+                </li>
               ))}
             </ul>
           </div>
@@ -163,15 +280,15 @@ export function App() {
 
         <section id="about">
           <div className="wrap">
-            <div className="section-head">
+            <div className="section-head" data-reveal>
               <p className="kicker">About</p>
               <div>
                 <h2>Profile</h2>
               </div>
             </div>
             <div className="about-grid">
-              <p>{profile.summary}</p>
-              <div className="ed">
+              <p data-reveal>{profile.summary}</p>
+              <div className="ed" data-reveal style={{ "--d": "120ms" } as CSSProperties}>
                 <label>Education</label>
                 <strong>{education.degree}</strong>
                 <p>
@@ -181,7 +298,7 @@ export function App() {
                 </p>
               </div>
             </div>
-            <div className="contact-row">
+            <div className="contact-row" data-reveal>
               <a href={`mailto:${profile.email}`}>{profile.email}</a>
               <a href={profile.phoneHref}>{profile.phone}</a>
               <a href={profile.github} target="_blank" rel="noreferrer">
@@ -198,7 +315,7 @@ export function App() {
         </section>
       </main>
 
-      <footer className="wrap foot">
+      <footer className="wrap foot" data-reveal>
         <span>© {new Date().getFullYear()} {profile.name}</span>
         <span>Senior Frontend Engineer</span>
       </footer>

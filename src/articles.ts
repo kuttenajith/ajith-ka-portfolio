@@ -18,6 +18,78 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "ai-frontend-prs-fail-review",
+    title: "Why most AI-generated frontend PRs still fail review",
+    date: "August 2026",
+    topic: "Review",
+    summary:
+      "The demo looks finished. The diff is large. The tests are green. A senior review still sends it back — usually for the same ten reasons.",
+    lede: "AI is fast at producing a screen that matches a screenshot. Review is slow because production UI is not a screenshot. It is loading, empty, error, keyboard, bundle, and the next person who has to change it.",
+    body: [
+      {
+        type: "p",
+        text: "This is not an argument against AI in frontend work. Used well, it writes boilerplate, migrates APIs, and drafts tests. Used badly, it opens a pull request that looks complete and is expensive to own. The gap is not syntax. Models are good at syntax. The gap is product judgement.",
+      },
+      { type: "h2", text: "What the demo hides" },
+      {
+        type: "p",
+        text: "Most generated PRs are optimised for the happy path on the author’s machine: logged in, fat network, data already there, mouse only, latest Chrome, no extra query params. That is also how the model was prompted — “build a dashboard that looks like this.” Reviewers do not merge a screenshot. They merge behaviour under stress.",
+      },
+      {
+        type: "p",
+        text: "The second hide is volume. A 800-line diff that “just works” is harder to review than a 80-line change with a clear reason. Models do not mind extra files. Humans pay for every extra file on every future change.",
+      },
+      { type: "h2", text: "The ten reasons it comes back" },
+      {
+        type: "ol",
+        items: [
+          "**No loading, empty, or error UI.** The list assumes an array. The form assumes the POST succeeds. The image assumes the URL exists. Production data is late, missing, or forbidden.",
+          "**State has no owner.** Local `useState`, a context, a URL param, and a server cache all hold the same flag. Refresh, back, and two tabs disagree. The model solved the render, not the source of truth.",
+          "**The CSS only fits the prompt.** Fixed widths, magic numbers, no wrapping, no reduced motion, a layout that breaks at 320px or 1440px. If the PR never mentions a breakpoint, it was not designed.",
+          "**Accessibility is a later ticket.** Buttons that are divs, inputs without labels, colour as the only status, a modal that does not trap focus. Automated a11y scores can still pass while keyboard users cannot complete the flow.",
+          "**The bundle grew for a widget.** A chart library, a date library, and an icon pack landed because the prompt said “add a chart.” There is no lazy boundary and no note on what this does to the landing JS.",
+          "**Effects that should be events.** Fetching in `useEffect` with a missing dependency, a subscription that never unsubscribes, a timer that outlives the page. The UI flickered once in the demo and looked “alive.”",
+          "**Tests that assert the mock.** Snapshot of class names, `getByText(\"Submit\")`, zero user-event flows. Green CI, zero confidence when the copy changes.",
+          "**API types that are a guess.** `any`, optional everything, or a hand-written shape that drifted from the backend. The page renders because the fixture was generated next to the component.",
+          "**No deletion story.** Feature flags, dead routes, and leftover feature folders. The model adds. It rarely removes the thing this screen replaced.",
+          "**The PR description is a recap of the files.** Reviewers need: what user problem, what you did not do, how to QA, what is risky. “Implemented the dashboard as requested” is not a review artefact.",
+        ],
+      },
+      { type: "h2", text: "A review that still works in 2026" },
+      {
+        type: "p",
+        text: "Read the PR description first. If you cannot QA from it, ask for one before you read the diff. Then walk the UI as a hostile user: slow network, empty tenant, expired session, keyboard only, a second tab. Then read the diff for ownership — who holds state, who owns styles, what ships on first load.",
+      },
+      {
+        type: "p",
+        text: "Ask three questions out loud. What happens when this request fails. What happens when this list is empty. What happens when this component is used on a page the author never opened. If the author cannot answer without running the app, the PR is not ready.",
+      },
+      { type: "h2", text: "Where AI is actually worth it" },
+      {
+        type: "ul",
+        items: [
+          "Renames, mechanical migrations, and converting a well-specified Figma token dump into CSS variables.",
+          "First draft of tests **after** you have written the acceptance cases in the ticket.",
+          "Explaining a confusing legacy file so a human can decide what to delete.",
+          "Boilerplate around a pattern the repo already has — a new route that copies an existing one, not a new architecture.",
+        ],
+      },
+      {
+        type: "p",
+        text: "It is a poor owner of product edges: money, auth, consent, real-time reconnect, anything a lawyer or a support queue will see. Generate a sketch. Keep a human on the contract.",
+      },
+      { type: "h2", text: "What to tell the model before it writes code" },
+      {
+        type: "p",
+        text: "A better prompt is a better PR. State the empty and error UI. Name the source of truth. Cap the libraries. Point at an existing component to copy. Require a keyboard path. Require a PR description with QA steps. If you cannot write those constraints, you are not ready to generate the change — you are ready to explore, in a branch you might throw away.",
+      },
+      {
+        type: "p",
+        text: "Speed is not the scarce resource on a frontend team. Review time and production incidents are. AI that increases both is not leverage. It is unpaid debt with a green build.",
+      },
+    ],
+  },
+  {
     slug: "lighthouse-93",
     title: "How a production frontend reached a 93.8% Lighthouse performance score",
     date: "August 2026",

@@ -8,8 +8,8 @@ export function Blog() {
         <p className="kicker">Writing</p>
         <h1>Blog</h1>
         <p className="lede">
-          Field notes on frontend architecture, performance, review, and delivery. Written for engineers and
-          hiring managers, not tutorial traffic.
+          Field notes on frontend architecture, CSS, performance, review, and delivery. Written for engineers
+          and hiring managers, not tutorial traffic.
         </p>
       </div>
       <div className="wrap">

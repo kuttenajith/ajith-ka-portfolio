@@ -18,6 +18,71 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "css-that-retired-javascript",
+    title: "The CSS that retired a generation of JavaScript layout code",
+    date: "August 2026",
+    topic: "CSS",
+    summary:
+      "Container queries, :has(), and view transitions now do work we used to ship ResizeObservers, layout stores, and animation libraries for. The remaining JavaScript should be the product, not the geometry.",
+    lede: "For years the frontend default was: the browser cannot do this, so we will measure the DOM in JavaScript and write the result back. That default is now expensive and, for a lot of UI, wrong.",
+    body: [
+      {
+        type: "p",
+        text: "This is not a CSS-versus-React argument. React is still how most teams own state, data, and the tree. The waste is using JavaScript to answer questions the browser already knows: how wide is this card, is this form invalid, did the user just navigate, should this heading stick.",
+      },
+      {
+        type: "p",
+        text: "Every ResizeObserver, matchMedia listener, and “isMobile” boolean in a store has a cost: extra renders, layout thrash, a breakpoint that disagrees with CSS, and a bug that only appears on a 27-inch monitor or a foldable. Native CSS does not have that second source of truth.",
+      },
+      { type: "h2", text: "Container queries, not another viewport store" },
+      {
+        type: "p",
+        text: "Viewport media queries describe the window. Components do not live in the window. They live in a sidebar, a modal, a grid cell, an iframe. A card that goes dense at 400px of **itself** is a container query. A card that goes dense at 768px of the laptop is a lie the first time you put it in a split view.",
+      },
+      {
+        type: "p",
+        text: "If your styled-component still reads `useMedia(\"(max-width: 768px)\")` to toggle a class, you are paying for a subscription to a number CSS already has. Prefer `@container` and let the same component work in a drawer and on a marketing page without a prop named `compact`.",
+      },
+      { type: "h2", text: ":has() is the parent selector we faked for a decade" },
+      {
+        type: "p",
+        text: "Teams wrote JavaScript to add `is-invalid` on a fieldset, `has-selection` on a table, `nav-open` on the body. `:has()` does that in the stylesheet: a form that tightens spacing when it contains an error, a card that shows a ring when it contains a checked input, a header that changes when a submenu is open.",
+      },
+      {
+        type: "p",
+        text: "The old pattern leaked. The class had to be kept in sync with the DOM. Miss one setState and the UI lied. `:has()` is live. Use it for relationship, not for business rules — do not put “user is on the paid plan” in a selector.",
+      },
+      { type: "h2", text: "View transitions instead of a motion library for page chrome" },
+      {
+        type: "p",
+        text: "A lot of “feel” on the web was a JS animation of opacity and transform on route change, plus a pile of `will-change` and cancelled timers. The View Transitions API is the browser’s version of that handshake: old snapshot, new snapshot, cross-fade or morph. It is not a replacement for game-like motion. It is a replacement for 40 lines that run on every SPA navigation.",
+      },
+      {
+        type: "p",
+        text: "Respect `prefers-reduced-motion` the same way you would in JavaScript. If you skip that, native motion is still a bug.",
+      },
+      { type: "h2", text: "What you should still write in JavaScript" },
+      {
+        type: "ul",
+        items: [
+          "**Anything that is data.** Fetching, cache, optimistic UI, auth, money, WebSockets.",
+          "**Anything that is a gesture with meaning.** Drag-to-reorder that writes an order to the server. Not “make this div follow the mouse for fun.”",
+          "**Anything the platform does not know.** Domain validation, feature flags, A/B assignment, which tenant you are in.",
+          "**Polyfills only while you must.** If your baseline still excludes `:has()` for a regulated browser, keep the class toggle — and delete it when that browser dies.",
+        ],
+      },
+      { type: "h2", text: "A review question that catches the old habit" },
+      {
+        type: "p",
+        text: "When you see a `useEffect` that only sets a class or a width, ask: can CSS do this with a container, `:has()`, or a media query. If the answer is yes, the effect is not “clever hooks.” It is a second layout engine. Delete it and the next person will not have to debug why the sidebar is `isCompact` while the CSS is still in the wide grid.",
+      },
+      {
+        type: "p",
+        text: "The impressive frontend in 2026 is not the one with the most observers. It is the one where JavaScript owns the product and CSS owns the geometry.",
+      },
+    ],
+  },
+  {
     slug: "ai-frontend-prs-fail-review",
     title: "Why most AI-generated frontend PRs still fail review",
     date: "August 2026",

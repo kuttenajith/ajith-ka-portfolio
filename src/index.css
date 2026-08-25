@@ -700,7 +700,14 @@ section {
   font-size: 13px;
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+.foot-visits {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 @media (min-width: 1600px) {

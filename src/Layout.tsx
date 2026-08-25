@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { SiteVisits } from "./SiteVisits";
 import { profile } from "./content";
 
 function ScrollToTop() {
@@ -54,6 +55,7 @@ export function Layout() {
         <span>
           © {new Date().getFullYear()} {profile.name}
         </span>
+        <SiteVisits />
         <span>Senior Frontend Engineer</span>
       </footer>
     </>

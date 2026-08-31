@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { SiteVisits } from "./SiteVisits";
+import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "./content";
 
 function ScrollToTop() {
@@ -24,31 +25,34 @@ export function Layout() {
         <Link className="mark" to="/">
           AK
         </Link>
-        <nav>
-          <ul className="nav-links">
-            <li>
-              <NavLink to="/" end>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/blog">Blog</NavLink>
-            </li>
-            <li>
-              <NavLink to="/work-with-me">Work with me</NavLink>
-            </li>
-            <li>
-              <a href={profile.github} target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <div className="nav-end">
+          <nav>
+            <ul className="nav-links">
+              <li>
+                <NavLink to="/" end>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/blog">Blog</NavLink>
+              </li>
+              <li>
+                <NavLink to="/work-with-me">Work with me</NavLink>
+              </li>
+              <li>
+                <a href={profile.github} target="_blank" rel="noreferrer">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href={profile.linkedin} target="_blank" rel="noreferrer">
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <ThemeToggle />
+        </div>
       </header>
       <Outlet />
       <footer className="wrap foot">

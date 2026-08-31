@@ -5,11 +5,18 @@ import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "./content";
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    if (hash) {
+      const node = document.getElementById(hash.slice(1));
+      if (node) {
+        node.scrollIntoView({ behavior: "instant", block: "start" });
+        return;
+      }
+    }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return null;
 }
@@ -38,6 +45,9 @@ export function Layout() {
               </li>
               <li>
                 <NavLink to="/work-with-me">Work with me</NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact">Contact</NavLink>
               </li>
               <li>
                 <a href={profile.github} target="_blank" rel="noreferrer">

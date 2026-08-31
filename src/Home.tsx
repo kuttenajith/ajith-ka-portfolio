@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
+import { ContactBlock } from "./ContactForm";
 
 function useScrollProgress() {
   const [progress, setProgress] = useState(0);
@@ -125,6 +126,9 @@ export function Home() {
               <a className="btn" href={profile.resume} download>
                 Download resume
               </a>
+              <Link className="btn" to="/contact">
+                Contact
+              </Link>
               <a className="btn" href={profile.linkedin} target="_blank" rel="noreferrer">
                 LinkedIn
               </a>
@@ -308,6 +312,12 @@ export function Home() {
                 Resume (PDF)
               </a>
             </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div className="wrap">
+            <ContactBlock />
           </div>
         </section>
       </main>

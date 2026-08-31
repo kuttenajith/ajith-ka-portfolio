@@ -172,3 +172,10 @@ export const offer = {
   howToStart:
     "Email with the product URL, the stack (React / Next.js), and the outcome you want (speed, maintainability, or a hiring-readiness review). I reply with availability and a fixed fee after a short intro call.",
 };
+
+export const contact = {
+  kicker: "Contact",
+  title: "Send the brief. I'll come back to you.",
+  lede: "Hiring managers, CTOs, CEOs, and founders — write the role, the product, or the problem. I reply by email, or I call you back if you ask.",
+  note: "Typically within one business day. India time (IST).",
+};

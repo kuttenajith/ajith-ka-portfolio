@@ -17,6 +17,9 @@ export function WorkWithMe() {
           <a className="btn primary" href={mail}>
             Request an intro call
           </a>
+          <Link className="btn" to="/contact">
+            Contact form
+          </Link>
           <Link className="btn" to="/blog/lighthouse-93">
             Read the Lighthouse article
           </Link>

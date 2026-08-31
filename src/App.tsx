@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ArticlePage } from "./ArticlePage";
 import { Blog } from "./Blog";
+import { ContactPage } from "./ContactPage";
 import { Home } from "./Home";
 import { Layout } from "./Layout";
 import { WorkWithMe } from "./WorkWithMe";
@@ -16,6 +17,7 @@ export function App() {
           <Route path="blog" element={<Blog />} />
           <Route path="blog/:slug" element={<ArticlePage />} />
           <Route path="work-with-me" element={<WorkWithMe />} />
+          <Route path="contact" element={<ContactPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

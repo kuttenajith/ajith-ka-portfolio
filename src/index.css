@@ -834,6 +834,167 @@ section {
   color: var(--accent);
 }
 
+#contact {
+  scroll-margin-top: 84px;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(280px, 1.08fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+
+.contact-copy h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(32px, 4.2vw, 48px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.contact-copy .lede {
+  margin-top: 16px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 32px);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+
+.contact-form_done h3 {
+  margin: 8px 0 12px;
+  font-family: var(--display);
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+
+.contact-form_done p {
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+}
+
+.honey {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.field span,
+.field legend {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field abbr {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.field em {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.reply-picks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.reply-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.reply-pick:has(input:checked) {
+  border-color: var(--accent);
+}
+
+.reply-pick input {
+  accent-color: var(--accent);
+}
+
+.contact-error {
+  margin: 0;
+  color: #c45c4a;
+  font-size: 14px;
+}
+
+html[data-theme="light"] .contact-error {
+  color: #9b2f22;
+}
+
+.contact-form .btn.primary {
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+}
+
 .foot {
   padding: 28px 0 48px;
   color: var(--muted);
@@ -919,7 +1080,10 @@ section {
   .hero,
   .section-head,
   .job,
-  .about-grid {
+  .about-grid,
+  .contact-layout,
+  .field-row,
+  .reply-picks {
     grid-template-columns: 1fr;
   }
 

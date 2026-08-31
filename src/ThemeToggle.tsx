@@ -77,15 +77,13 @@ export function ThemeToggle() {
       busy.current = false;
     };
 
-    const startViewTransition = (
-      document as Document & {
-        startViewTransition?: (update: () => void) => ViewTransition;
-      }
-    ).startViewTransition;
+    const doc = document as Document & {
+      startViewTransition?: (update: () => void) => ViewTransition & { finished?: Promise<void> };
+    };
 
-    if (typeof startViewTransition === "function") {
-      const transition = startViewTransition(swap);
+    if (typeof doc.startViewTransition === "function") {
       try {
+        const transition = doc.startViewTransition.call(document, swap);
         await transition.ready;
         const radius = Math.hypot(
           Math.max(x, window.innerWidth - x),
@@ -101,9 +99,9 @@ export function ThemeToggle() {
             pseudoElement: "::view-transition-new(root)",
           },
         );
-        await (transition as ViewTransition & { finished?: Promise<void> }).finished;
+        await transition.finished;
       } catch {
-        /* aborted */
+        swap();
       }
       done();
       return;

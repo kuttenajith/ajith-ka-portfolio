@@ -985,8 +985,29 @@ section {
   font-size: 14px;
 }
 
+.field-error {
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+  color: #c45c4a;
+}
+
+.field_invalid input,
+.field_invalid select,
+.field_invalid textarea {
+  border-color: #c45c4a;
+}
+
+html[data-theme="light"] .field-error,
 html[data-theme="light"] .contact-error {
   color: #9b2f22;
+}
+
+html[data-theme="light"] .field_invalid input,
+html[data-theme="light"] .field_invalid select,
+html[data-theme="light"] .field_invalid textarea {
+  border-color: #9b2f22;
 }
 
 .contact-form .btn.primary {

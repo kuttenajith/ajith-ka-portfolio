@@ -18,6 +18,64 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "lighthouse-vanity-inp-costs-money",
+    title: "Lighthouse 100 is a vanity metric. INP is the one that costs you money",
+    date: "August 2026",
+    topic: "Performance",
+    summary:
+      "A green lab score on an empty Chrome profile is not what users feel. Interaction to Next Paint is the Core Web Vital that tracks “this button did nothing,” and that is what abandons a checkout.",
+    lede: "Lighthouse is a useful lab. It is a poor scoreboard. Teams still ship a 99 screenshot and miss the click that takes 400ms on a mid-range Android with a fat main thread.",
+    relatedLabel: "Lighthouse field note",
+    relatedHref: "https://kuttenajith.github.io/ajith-ka-portfolio/blog/lighthouse-93",
+    body: [
+      {
+        type: "p",
+        text: "I have written about moving a production Lighthouse performance score. That work still matters: smaller first JS, honest images, less work before first paint. It is also incomplete. Google replaced FID with INP as a Core Web Vital for a reason. Users do not bounce because the lighthouse emoji was orange. They bounce because the UI did not respond.",
+      },
+      { type: "h2", text: "Lab versus field" },
+      {
+        type: "p",
+        text: "Lighthouse is a scripted load in a controlled browser. CrUX and Search Console are what real people did, on real devices, with extensions, with CPU already busy. A page can be “green” in the lab and slow to tap in the field if the first load is cheap and every later interaction is expensive — opening a drawer, switching a tab, submitting a form, typing in a combobox.",
+      },
+      {
+        type: "p",
+        text: "If lab and field disagree, trust the field. Then use the lab to reproduce one interaction, not to decorate a slide.",
+      },
+      { type: "h2", text: "What INP actually measures" },
+      {
+        type: "p",
+        text: "INP looks at clicks, taps, and key presses, and how long until the next paint that reflects that input. It is not “time to first byte.” It is “I pressed this and the screen lied to me.” Long tasks on the main thread, huge style recalcs, and hydration that steals the click are the usual causes.",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Find the slow interaction**, not the slow URL. Record Performance while you do the thing users do: add to cart, open filters, change a bet, type a search.",
+          "**Break the long task.** Yield, split the update, defer non-visible work. A 200ms handler plus a 200ms render is an INP problem even if LCP is fine.",
+          "**Stop hydrating the world.** If the first tap waits for a large React tree, the lab homepage still looks fast. The product does not.",
+          "**Prefer CSS and the browser for chrome.** Animating layout in JS during a click is how you fail INP with a “smooth” demo.",
+        ],
+      },
+      { type: "h2", text: "What a 100 does not buy you" },
+      {
+        type: "p",
+        text: "A perfect Lighthouse run on `?logged_out=1` with an empty cart does not include the authenticated app shell, the chat widget, the A/B tag manager, or the date library that mounts on focus. Those are the bytes and the tasks that sit on the click path. Optimising the marketing paint while the product click is jank is how teams get a vanity screenshot and a support ticket that says “the button is broken.”",
+      },
+      { type: "h2", text: "A scoreboard that is honest" },
+      {
+        type: "ul",
+        items: [
+          "Field INP (and LCP, CLS) for the URLs that take money, not only the landing page.",
+          "A lab trace of the slowest important interaction, saved next to the PR.",
+          "Lighthouse as a regression check on first load — useful, not the headline KPI.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Publish the interaction number. Hide the lighthouse screenshot until it agrees with CrUX. The impressive frontend is the one that feels instant after the paint, not the one that screenshots well before anyone clicks.",
+      },
+    ],
+  },
+  {
     slug: "css-that-retired-javascript",
     title: "The CSS that retired a generation of JavaScript layout code",
     date: "August 2026",

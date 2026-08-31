@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { contact } from "./content";
-import { ContactSendError, sendContact } from "./sendContact";
+import { sendContact } from "./sendContact";
 import {
   roles,
   sanitizePhone,
@@ -11,7 +11,7 @@ import {
   type ReplyBy,
 } from "./validateContact";
 
-type Status = "idle" | "sending" | "sent" | "activate" | "error";
+type Status = "idle" | "sending" | "sent" | "error";
 
 const empty: ContactFields = {
   name: "",
@@ -96,11 +96,6 @@ function ContactForm() {
       setStatus("sent");
       setFields(empty);
     } catch (reason) {
-      if (reason instanceof ContactSendError && reason.kind === "activate") {
-        setStatus("activate");
-        setBanner(reason.message);
-        return;
-      }
       setStatus("error");
       setBanner(reason instanceof Error ? reason.message : "The message could not be sent.");
     }
@@ -114,27 +109,6 @@ function ContactForm() {
         <p>I will reply from my inbox. If you asked for a call back, I will phone you on the number you left.</p>
         <button type="button" className="btn" onClick={() => setStatus("idle")}>
           Send another
-        </button>
-      </div>
-    );
-  }
-
-  if (status === "activate") {
-    return (
-      <div className="contact-form contact-form_done" role="status">
-        <p className="kicker">One more step</p>
-        <h3>Activate the inbox link</h3>
-        <p>{banner}</p>
-        <p className="meta">This is a one-time check. After you click the link, send the form again and it will arrive as a normal email.</p>
-        <button
-          type="button"
-          className="btn primary"
-          onClick={() => {
-            setStatus("idle");
-            setBanner("");
-          }}
-        >
-          I have activated it — send again
         </button>
       </div>
     );

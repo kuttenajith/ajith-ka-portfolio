@@ -1,5 +1,5 @@
 export const profile = {
-  name: "Ajith K A",
+  name: "Ajith Amarnath",
   role: "Senior Frontend Engineer",
   location: "Madurai, Tamil Nadu, India",
   email: "ajithkutten1998@gmail.com",
@@ -113,6 +113,22 @@ export const practice = {
     "Performance optimization using Lighthouse, lazy loading, and code splitting.",
     "Reusable frontend systems and component libraries for enterprise applications.",
     "Cross-functional delivery with product, UX, QA, backend, and DevOps teams.",
+  ],
+  table: [
+    { group: "Interface", skill: "React.js", level: 93 },
+    { group: "Interface", skill: "Next.js", level: 88 },
+    { group: "Interface", skill: "TypeScript", level: 90 },
+    { group: "Interface", skill: "JavaScript (ES6+)", level: 90 },
+    { group: "Interface", skill: "HTML5 / CSS3", level: 88 },
+    { group: "Architecture", skill: "SSR", level: 85 },
+    { group: "Architecture", skill: "Micro-frontends", level: 82 },
+    { group: "Architecture", skill: "Design systems", level: 86 },
+    { group: "Architecture", skill: "State management", level: 84 },
+    { group: "Architecture", skill: "REST + WebSockets", level: 83 },
+    { group: "Delivery", skill: "Performance (Lighthouse / CWV)", level: 90 },
+    { group: "Delivery", skill: "CI/CD / Git", level: 80 },
+    { group: "Delivery", skill: "GCP / AWS / Azure", level: 76 },
+    { group: "Delivery", skill: "Docker / Agile", level: 74 },
   ],
 };
 

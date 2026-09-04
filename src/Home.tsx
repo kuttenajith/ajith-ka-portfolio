@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
 import { ContactBlock } from "./ContactForm";
+import { ResumeActions } from "./ResumeActions";
 import { TypeLine } from "./TypeLine";
 
 function useScrollProgress() {
@@ -149,9 +150,7 @@ export function Home() {
               <Link className="btn" to="/blog">
                 Blog
               </Link>
-              <a className="btn" href={profile.resume} download>
-                Download resume
-              </a>
+              <ResumeActions />
               <Link className="btn" to="/contact">
                 Contact
               </Link>
@@ -164,7 +163,7 @@ export function Home() {
             <div className="portrait__stage">
               <span className="portrait__offset" aria-hidden="true" />
               <div className="portrait__clip">
-                <img src={profile.photo} alt="Ajith K A, Senior Frontend Engineer" />
+                <img src={profile.photo} alt="Ajith Amarnath, Senior Frontend Engineer" />
               </div>
               <span className="portrait__tick portrait__tick--tl" aria-hidden="true" />
               <span className="portrait__tick portrait__tick--tr" aria-hidden="true" />
@@ -278,22 +277,32 @@ export function Home() {
                 <p>Frontend, architecture, and delivery capabilities used in production systems.</p>
               </div>
             </div>
-            <div className="layers">
-              {practice.layers.map((layer, i) => (
-                <article
-                  className="layer"
-                  data-reveal
-                  key={layer.title}
-                  style={{ "--d": `${i * 110}ms` } as CSSProperties}
-                >
-                  <h3>{layer.title}</h3>
-                  <ul>
-                    {layer.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
+            <div className="skill-table-wrap" data-reveal>
+              <table className="skill-table">
+                <thead>
+                  <tr>
+                    <th>Area</th>
+                    <th>Skill</th>
+                    <th>Proficiency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {practice.table.map((row) => (
+                    <tr key={`${row.group}-${row.skill}`}>
+                      <td>{row.group}</td>
+                      <td>{row.skill}</td>
+                      <td>
+                        <div className="skill-meter" title={`${row.level}%`}>
+                          <span className="skill-meter__track">
+                            <span style={{ width: `${row.level}%` }} />
+                          </span>
+                          <em>{row.level}%</em>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             <ul className="focus">
               {practice.focus.map((item, i) => (
@@ -334,9 +343,7 @@ export function Home() {
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 linkedin.com/in/ajith-amarnath-18b71713b
               </a>
-              <a href={profile.resume} download>
-                Resume (PDF)
-              </a>
+              <ResumeActions />
             </div>
           </div>
         </section>

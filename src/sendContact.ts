@@ -27,19 +27,20 @@ export async function sendContact(fields: ContactFields) {
 
   const replyBy = fields.replyBy === "callback" ? "Call back requested" : "Email";
   const phone = sanitizePhone(fields.phone).trim() || "—";
+  const roleLabel = fields.role === "Other" ? `Other — ${fields.roleOther.trim()}` : fields.role;
 
   const response = await fetch("https://api.web3forms.com/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({
       access_key: key,
-      subject: `Portfolio contact — ${fields.role}: ${fields.name.trim()} (${fields.company.trim()})`,
-      from_name: "Ajith K A portfolio",
+      subject: `Portfolio contact — ${roleLabel}: ${fields.name.trim()} (${fields.company.trim()})`,
+      from_name: "Ajith Amarnath portfolio",
       name: fields.name.trim(),
       email: fields.email.trim(),
       replyto: fields.email.trim(),
       company: fields.company.trim(),
-      role: fields.role,
+      role: roleLabel,
       reply_by: replyBy,
       phone,
       message: fields.message.trim(),

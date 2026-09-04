@@ -1,7 +1,8 @@
-import { type ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { type ReactNode, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "./content";
+import { scrollToId } from "./scroll";
 
 function IconHome() {
   return (
@@ -11,7 +12,7 @@ function IconHome() {
   );
 }
 
-function IconBlog() {
+function IconDoc() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path fill="currentColor" d="M6 3.5h9.2L20.5 9v11.5H6V3.5Zm8.2 1.7v4.3h4.1" />
@@ -19,7 +20,7 @@ function IconBlog() {
   );
 }
 
-function IconWork() {
+function IconBrief() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path fill="currentColor" d="M9 4.5h6l.8 2H20.5v13H3.5v-13H8.2L9 4.5Zm1.5 2 .4-1h2.2l.4 1h-3Z" />
@@ -60,51 +61,121 @@ function IconLinkedIn() {
   );
 }
 
-function RailLink({
-  to,
+const homeOrder = ["top", "highlights", "projects", "experience", "skills", "about", "contact"] as const;
+
+const homeMap: Record<(typeof homeOrder)[number], string> = {
+  top: "home",
+  highlights: "home",
+  projects: "projects",
+  experience: "experience",
+  skills: "experience",
+  about: "experience",
+  contact: "contact",
+};
+
+function RailButton({
   label,
-  end,
+  active,
+  onClick,
+  href,
   children,
 }: {
-  to: string;
   label: string;
-  end?: boolean;
+  active?: boolean;
+  onClick?: () => void;
+  href?: string;
   children: ReactNode;
 }) {
+  const className = `rail-btn${active ? " active" : ""}`;
+  if (href) {
+    return (
+      <a className={className} href={href} target="_blank" rel="noreferrer" aria-label={label}>
+        {children}
+        <span className="rail-tip">{label}</span>
+      </a>
+    );
+  }
   return (
-    <NavLink to={to} end={end} className="rail-btn" aria-label={label}>
+    <button type="button" className={className} onClick={onClick} aria-label={label} aria-current={active ? "page" : undefined}>
       {children}
       <span className="rail-tip">{label}</span>
-    </NavLink>
+    </button>
   );
 }
 
 export function SideRail() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [spy, setSpy] = useState("home");
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      return;
+    }
+
+    const onScroll = () => {
+      const line = window.innerHeight * 0.3;
+      let current = "home";
+      for (const id of homeOrder) {
+        const node = document.getElementById(id);
+        if (!node) continue;
+        if (node.getBoundingClientRect().top <= line) current = homeMap[id];
+      }
+      setSpy(current);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  const goHomeSection = (id: string) => {
+    if (pathname === "/") {
+      scrollToId(id);
+      return;
+    }
+    navigate({ pathname: "/", hash: id });
+  };
+
+  const homeActive = pathname === "/" && spy === "home";
+  const experienceActive = pathname === "/" && spy === "experience";
+  const projectsActive = pathname === "/" && spy === "projects";
+  const contactActive = pathname === "/contact" || (pathname === "/" && spy === "contact");
+  const blogActive = pathname.startsWith("/blog");
+  const workActive = pathname === "/work-with-me";
+
   return (
     <nav className="rail" aria-label="Primary">
-      <NavLink className="rail-mark" to="/" aria-label="Home">
-        AK
-      </NavLink>
+      <Link className="rail-mark" to="/" aria-label="Home">
+        AA
+      </Link>
       <ul className="rail-list">
         <li>
-          <RailLink to="/" label="Home" end>
+          <RailButton label="Home" active={homeActive} onClick={() => goHomeSection("top")}>
             <IconHome />
-          </RailLink>
+          </RailButton>
         </li>
         <li>
-          <RailLink to="/blog" label="Blog">
-            <IconBlog />
-          </RailLink>
+          <RailButton label="Experience" active={experienceActive} onClick={() => goHomeSection("experience")}>
+            <IconDoc />
+          </RailButton>
         </li>
         <li>
-          <RailLink to="/work-with-me" label="Work with me">
-            <IconWork />
-          </RailLink>
+          <RailButton label="Projects" active={projectsActive} onClick={() => goHomeSection("projects")}>
+            <IconBrief />
+          </RailButton>
         </li>
         <li>
-          <RailLink to="/contact" label="Contact">
+          <RailButton
+            label="Contact"
+            active={contactActive}
+            onClick={() => {
+              if (pathname === "/") scrollToId("contact");
+              else navigate("/contact");
+            }}
+          >
             <IconMail />
-          </RailLink>
+          </RailButton>
         </li>
         <li>
           <a className="rail-btn" href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -119,7 +190,15 @@ export function SideRail() {
           </a>
         </li>
       </ul>
-      <ThemeToggle />
+      <div className="rail-foot">
+        <Link className={`rail-text${blogActive ? " is-on" : ""}`} to="/blog">
+          Blog
+        </Link>
+        <Link className={`rail-text${workActive ? " is-on" : ""}`} to="/work-with-me">
+          Work
+        </Link>
+        <ThemeToggle />
+      </div>
     </nav>
   );
 }

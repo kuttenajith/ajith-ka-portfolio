@@ -18,6 +18,7 @@ const empty: ContactFields = {
   email: "",
   company: "",
   role: "",
+  roleOther: "",
   replyBy: "email",
   phone: "",
   message: "",
@@ -191,7 +192,11 @@ function ContactForm() {
             name="role"
             value={fields.role}
             aria-invalid={Boolean(errors.role)}
-            onChange={(event) => setField("role", event.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+              setField("role", value);
+              if (value !== "Other") setField("roleOther", "");
+            }}
             onBlur={() => onBlur("role")}
           >
             <option value="" disabled>
@@ -206,6 +211,25 @@ function ContactForm() {
           <FieldError text={errors.role} />
         </label>
       </div>
+
+      {fields.role === "Other" ? (
+        <label className={`field${errors.roleOther ? " field_invalid" : ""}`}>
+          <span>
+            Tell me your role <abbr title="required">*</abbr>
+          </span>
+          <input
+            name="roleOther"
+            type="text"
+            maxLength={80}
+            value={fields.roleOther}
+            aria-invalid={Boolean(errors.roleOther)}
+            placeholder="e.g. Product designer, Founding engineer"
+            onChange={(event) => setField("roleOther", event.target.value)}
+            onBlur={() => onBlur("roleOther")}
+          />
+          <FieldError text={errors.roleOther} />
+        </label>
+      ) : null}
 
       <fieldset className={`field${errors.replyBy ? " field_invalid" : ""}`}>
         <legend>

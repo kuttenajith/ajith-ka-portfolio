@@ -14,6 +14,7 @@ export type ContactFields = {
   email: string;
   company: string;
   role: string;
+  roleOther: string;
   replyBy: ReplyBy;
   phone: string;
   message: string;
@@ -68,6 +69,8 @@ export function validateContact(fields: ContactFields): FieldErrors {
 
   if (!roles.includes(fields.role as ContactRole)) {
     errors.role = "Select the option that best matches your role.";
+  } else if (fields.role === "Other" && fields.roleOther.trim().length < 2) {
+    errors.roleOther = "Say what your role is — this is required when you pick Other.";
   }
 
   if (fields.replyBy !== "email" && fields.replyBy !== "callback") {

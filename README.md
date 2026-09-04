@@ -1,6 +1,6 @@
-# Ajith K A — Portfolio
+# Ajith Amarnath — Portfolio
 
-Personal site of **Ajith K A**, Senior Frontend Engineer (React, Next.js, TypeScript).
+Personal site of **Ajith Amarnath**, Senior Frontend Engineer (React, Next.js, TypeScript).
 
 **Live:** [kuttenajith.github.io/ajith-ka-portfolio](https://kuttenajith.github.io/ajith-ka-portfolio/)  
 **Repo:** [github.com/kuttenajith/ajith-ka-portfolio](https://github.com/kuttenajith/ajith-ka-portfolio)  

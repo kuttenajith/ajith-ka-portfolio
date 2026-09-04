@@ -2,18 +2,39 @@ import { useEffect, useState } from "react";
 
 const NAMESPACE = "kuttenajith.github.io";
 const KEY = "ajith-ka-portfolio";
-const SESSION = "ak-portfolio-visit";
+const COUNTED = "ak-portfolio-visit-counted";
 const ENDPOINT = "https://abacus.jasoncameron.dev";
 
 let visitsPromise: Promise<number | null> | null = null;
+
+function wasCounted() {
+  try {
+    if (localStorage.getItem(COUNTED) === "1") return true;
+    if (sessionStorage.getItem("ak-portfolio-visit") === "1") {
+      localStorage.setItem(COUNTED, "1");
+      return true;
+    }
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+function markCounted() {
+  try {
+    localStorage.setItem(COUNTED, "1");
+  } catch {
+    /* private mode */
+  }
+}
 
 function loadVisits() {
   if (visitsPromise) return visitsPromise;
 
   const live = window.location.hostname === "kuttenajith.github.io";
-  const already = sessionStorage.getItem(SESSION) === "1";
+  const already = wasCounted();
   const action = live && !already ? "hit" : "get";
-  if (live && !already) sessionStorage.setItem(SESSION, "1");
+  if (live && !already) markCounted();
 
   visitsPromise = fetch(`${ENDPOINT}/${action}/${NAMESPACE}/${KEY}`)
     .then((response) => {
@@ -44,7 +65,7 @@ export function SiteVisits() {
   const formatted = new Intl.NumberFormat("en").format(visits);
 
   return (
-    <span className="foot-visits" title={`${formatted} site visits`}>
+    <span className="foot-visits" title={`${formatted} unique browsers on the live site`}>
       {formatted} visits
     </span>
   );

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
 import { ContactBlock } from "./ContactForm";
-import { ResumeButton } from "./ResumeActions";
+import { ResumeButton, ResumeWithDownload } from "./ResumeActions";
 import { TypeLine } from "./TypeLine";
 
 function useScrollProgress() {
@@ -307,7 +307,7 @@ export function Home() {
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 linkedin.com/in/ajith-amarnath-18b71713b
               </a>
-              <ResumeButton variant="link" />
+              <ResumeWithDownload />
             </div>
           </div>
         </section>

@@ -10,6 +10,12 @@ export const profile = {
   resume: `${import.meta.env.BASE_URL}Ajith-KA-Senior-Frontend.pdf`,
   photo: `${import.meta.env.BASE_URL}ajith-ka.jpg`,
   currentRole: "SDE II — Frontend, ARRise powering Pragmatic Play",
+  titles: [
+    "Senior Frontend Engineer",
+    "Frontend architect",
+    "Team lead",
+    "React specialist",
+  ],
   headline:
     "Senior Frontend Engineer specializing in React, Next.js, and TypeScript, with experience in frontend architecture, performance optimization, and team leadership.",
   summary:

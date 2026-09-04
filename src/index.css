@@ -13,6 +13,7 @@
   --photo-scrim: linear-gradient(180deg, rgb(14 17 16 / 0%) 55%, rgb(14 17 16 / 38%) 100%);
   --page-pad: clamp(20px, 3.5vw, 40px);
   --content: 1180px;
+  --rail: 0px;
   --sans: "Source Sans 3", system-ui, sans-serif;
   --display: "Source Serif 4", Georgia, "Times New Roman", serif;
   color-scheme: dark;
@@ -101,6 +102,105 @@ a {
 
 .skip:focus {
   top: 12px;
+}
+
+.shell {
+  margin-left: var(--rail);
+  min-width: 0;
+}
+
+.rail {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 15;
+  width: var(--rail);
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 0 24px;
+  background: var(--bg-2);
+  border-right: 1px solid var(--line);
+  overflow: visible;
+}
+
+.rail-mark {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.rail-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rail-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.rail-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.rail-btn:hover,
+.rail-btn:focus-visible {
+  color: var(--ink);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.rail-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.rail-tip {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translate(-8px, -50%);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.rail-btn:hover .rail-tip,
+.rail-btn:focus-visible .rail-tip {
+  opacity: 1;
+  transform: translate(0, -50%);
 }
 
 .nav {
@@ -302,6 +402,67 @@ html[data-theme="light"] .theme-switch__knob {
   font-size: clamp(36px, 4.6vw, 56px);
   line-height: 1.15;
   letter-spacing: -0.02em;
+}
+
+.type-line {
+  margin: 14px 0 0;
+  font-size: clamp(20px, 2.4vw, 28px);
+  color: var(--muted);
+  font-weight: 500;
+  min-height: 1.4em;
+}
+
+.type-line__word {
+  color: var(--accent);
+  font-family: var(--display);
+  font-weight: 600;
+}
+
+.type-line__caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  margin-left: 5px;
+  background: var(--accent);
+  vertical-align: -0.08em;
+  animation: caret 0.9s step-end infinite;
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hero-social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--accent);
+  background: var(--bg-2);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-social a svg {
+  width: 16px;
+  height: 16px;
+}
+
+.hero-social a:hover,
+.hero-social a:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  transform: translateY(-2px);
 }
 
 .lede {
@@ -1032,6 +1193,20 @@ html[data-theme="light"] .field_invalid textarea {
   letter-spacing: 0.02em;
 }
 
+@media (min-width: 861px) {
+  :root {
+    --rail: 80px;
+  }
+
+  .rail {
+    display: flex;
+  }
+
+  .nav {
+    display: none;
+  }
+}
+
 @media (min-width: 1600px) {
   :root {
     --content: 1420px;
@@ -1148,6 +1323,14 @@ html[data-theme="light"] .field_invalid textarea {
   .theme-switch__stars,
   .theme-wipe {
     transition: none !important;
+  }
+
+  .type-line__caret {
+    animation: none;
+  }
+
+  .rail-btn:hover {
+    transform: none;
   }
 }
 

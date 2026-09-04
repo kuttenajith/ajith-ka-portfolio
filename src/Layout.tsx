@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { SideRail } from "./SideRail";
 import { SiteVisits } from "./SiteVisits";
 import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "./content";
@@ -28,6 +29,8 @@ export function Layout() {
       <a className="skip" href="#top">
         Skip to content
       </a>
+      <SideRail />
+      <div className="shell">
       <header className="nav">
         <Link className="mark" to="/">
           AK
@@ -72,6 +75,7 @@ export function Layout() {
         <SiteVisits />
         <span>Senior Frontend Engineer</span>
       </footer>
+      </div>
     </>
   );
 }

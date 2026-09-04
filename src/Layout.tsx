@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BackToTop } from "./BackToTop";
 import { SideRail } from "./SideRail";
@@ -23,6 +23,37 @@ function ScrollToTop() {
 }
 
 export function Layout() {
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 861px)");
+    const onChange = () => {
+      if (mq.matches) setMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <>
       <ScrollToTop />
@@ -32,41 +63,71 @@ export function Layout() {
       <SideRail />
       <div className="shell">
         <header className="nav">
-          <Link className="mark" to="/">
+          <Link className="mark" to="/" onClick={closeMenu}>
             AA
           </Link>
           <div className="nav-end">
-            <nav>
-              <ul className="nav-links">
-                <li>
-                  <NavLink to="/" end>
-                    Home
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/blog">Blog</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/work-with-me">Work with me</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/contact">Contact</NavLink>
-                </li>
-                <li>
-                  <a href={profile.github} target="_blank" rel="noreferrer">
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                    LinkedIn
-                  </a>
-                </li>
-              </ul>
-            </nav>
             <ThemeToggle />
+            <button
+              type="button"
+              className={`burger${menuOpen ? " burger_open" : ""}`}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="site-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span className="burger__lines" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
           </div>
         </header>
+        <nav id="site-menu" className={`nav-drawer${menuOpen ? " is-open" : ""}`} aria-hidden={!menuOpen}>
+          <ul className="nav-drawer__list">
+            <li>
+              <NavLink to="/" end onClick={closeMenu}>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <Link to="/#experience" onClick={closeMenu}>
+                Experience
+              </Link>
+            </li>
+            <li>
+              <Link to="/#projects" onClick={closeMenu}>
+                Projects
+              </Link>
+            </li>
+            <li>
+              <NavLink to="/blog" onClick={closeMenu}>
+                Blog
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/work-with-me" onClick={closeMenu}>
+                Work with me
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact" onClick={closeMenu}>
+                Contact
+              </NavLink>
+            </li>
+            <li>
+              <a href={profile.github} target="_blank" rel="noreferrer" onClick={closeMenu}>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href={profile.linkedin} target="_blank" rel="noreferrer" onClick={closeMenu}>
+                LinkedIn
+              </a>
+            </li>
+          </ul>
+        </nav>
         <div className="shell-main">
           <Outlet />
         </div>

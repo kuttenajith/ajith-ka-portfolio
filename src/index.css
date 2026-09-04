@@ -238,13 +238,14 @@ button.rail-btn {
 .nav {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 32;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   width: 100%;
-  padding: 16px max(var(--page-pad), calc((100% - var(--content)) / 2 + var(--page-pad)));
+  padding: max(12px, env(safe-area-inset-top)) max(var(--page-pad), env(safe-area-inset-right)) 12px
+    max(var(--page-pad), env(safe-area-inset-left));
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -253,9 +254,102 @@ button.rail-btn {
 .nav-end {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   margin-left: auto;
   min-width: 0;
+}
+
+.burger {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-2);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.burger__lines {
+  display: grid;
+  gap: 5px;
+  width: 18px;
+}
+
+.burger__lines span {
+  display: block;
+  height: 2px;
+  border-radius: 99px;
+  background: currentColor;
+  transform-origin: center;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.burger_open .burger__lines span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger_open .burger__lines span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger_open .burger__lines span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 31;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px var(--page-pad) 40px;
+  background: rgb(14 17 16 / 96%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+
+html[data-theme="light"] .nav-drawer {
+  background: rgb(244 239 230 / 96%);
+}
+
+.nav-drawer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+  width: min(100%, 320px);
+}
+
+.nav-drawer a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: 10px;
+}
+
+.nav-drawer a:hover,
+.nav-drawer a.active {
+  color: var(--accent);
+  background: var(--bg-2);
 }
 
 .mark {
@@ -264,47 +358,6 @@ button.rail-btn {
   font-weight: 600;
   letter-spacing: -0.02em;
   text-decoration: none;
-}
-
-.nav-links {
-  display: flex;
-  gap: 22px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.nav-links a {
-  position: relative;
-  text-decoration: none;
-  color: var(--muted);
-  transition: color 0.25s ease;
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--ink);
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
-  transform: scaleX(1);
 }
 
 .theme-switch {
@@ -402,7 +455,7 @@ html[data-theme="light"] .theme-switch__knob {
   width: 100%;
   max-width: var(--content);
   margin-inline: auto;
-  padding-inline: var(--page-pad);
+  padding-inline: max(var(--page-pad), env(safe-area-inset-left), env(safe-area-inset-right));
 }
 
 .hero {
@@ -1356,6 +1409,10 @@ html[data-theme="light"] .field_invalid textarea {
   .nav {
     display: none;
   }
+
+  .nav-drawer {
+    display: none;
+  }
 }
 
 @media (min-width: 1600px) {
@@ -1405,23 +1462,8 @@ html[data-theme="light"] .field_invalid textarea {
 }
 
 @media (max-width: 860px) {
-  .nav {
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-
-  .nav-end {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-    font-size: 11px;
-    justify-content: flex-start;
+  :root {
+    --page-pad: clamp(20px, 6vw, 28px);
   }
 
   .hero,
@@ -1430,21 +1472,143 @@ html[data-theme="light"] .field_invalid textarea {
   .about-grid,
   .contact-layout,
   .field-row,
-  .reply-picks {
+  .reply-picks,
+  .offer-grid {
     grid-template-columns: 1fr;
   }
 
-  .portrait {
-    justify-self: start;
-    max-width: 280px;
+  .hero {
+    justify-items: center;
+    text-align: center;
+    gap: 28px;
+    padding: 28px 0 40px;
   }
 
-  .hero {
-    padding-top: 40px;
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 9vw, 42px);
+  }
+
+  .lede,
+  .meta {
+    max-width: 36rem;
+  }
+
+  .hero-social,
+  .actions {
+    justify-content: center;
+  }
+
+  .portrait {
+    order: -1;
+    justify-self: center;
+    max-width: 220px;
+  }
+
+  .section-head {
+    text-align: center;
+    margin-bottom: 28px;
+    gap: 8px;
+  }
+
+  .section-head .kicker {
+    margin-bottom: 0;
+  }
+
+  .section-head h2 {
+    font-size: clamp(26px, 7vw, 32px);
+  }
+
+  section {
+    padding: 56px 0;
+  }
+
+  .page {
+    padding: 36px 0 64px;
+  }
+
+  .page-head {
+    text-align: center;
+  }
+
+  .page-head .actions,
+  .page-head .lede,
+  .page-head .meta {
+    margin-inline: auto;
+  }
+
+  .contact-copy {
+    text-align: center;
+  }
+
+  .contact-copy .lede,
+  .contact-copy .meta {
+    margin-inline: auto;
+  }
+
+  .contact-form {
+    padding: 20px;
   }
 
   .stat {
     min-height: 0;
+  }
+
+  .impact,
+  .projects {
+    grid-template-columns: 1fr;
+  }
+
+  .layer li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .job ul {
+    padding-left: 18px;
+    text-align: left;
+  }
+
+  .about-grid,
+  .article p,
+  .article li {
+    text-align: left;
+  }
+
+  .contact-row {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .foot {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding: 24px 0 max(28px, env(safe-area-inset-bottom));
+  }
+
+  .back-top {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: clamp(28px, 8.5vw, 36px);
+  }
+
+  .type-line {
+    font-size: 18px;
+  }
+
+  .contact-form {
+    padding: 16px;
   }
 }
 

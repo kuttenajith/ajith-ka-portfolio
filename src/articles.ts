@@ -18,6 +18,104 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "typed-iframe-contracts",
+    title: "If the host imports the remote, you do not have a platform",
+    date: "September 2026",
+    topic: "Architecture",
+    summary:
+      "A shell that reaches into another app’s bundle is a monorepo with extra steps. The impressive contract is a typed message list, a ready handshake, and a remote that can die without taking the host with it.",
+    lede: "Micro-frontends fail in code review for a boring reason: somebody imported a component from the other team. Isolation was the requirement. A shared React tree was the shortcut.",
+    relatedLabel: "MFE Shell",
+    relatedHref: "https://kuttenajith.github.io/mfe-shell/",
+    body: [
+      {
+        type: "p",
+        text: "I work on products where a host owns chrome, routing, and session, and other apps load inside it. The moment the host imports a remote button, you have coupled release calendars, CSS, and a React version. That can be fine for one team. It is not a platform.",
+      },
+      { type: "h2", text: "What the contract actually is" },
+      {
+        type: "p",
+        text: "A host promises a window, a theme, and a way to talk. A remote promises a ready signal, a size or route it understands, and that it will not steal the parent’s history. Everything else is optional. If you cannot write those promises on one page, you are not ready to split the deploy.",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Ready.** The remote says it can receive. Until then the host shows a timeout UI, not a blank iframe.",
+          "**Theme.** Tokens or a theme name go host → remote. The remote does not scrape the parent DOM for colours.",
+          "**Navigate.** Who owns the URL is written down. Back button behaviour is not “we will see.”",
+          "**Failure.** A remote 500 is a panel error, not a white shell. Kill the iframe; keep the chrome.",
+        ],
+      },
+      { type: "h2", text: "Why postMessage still wins arguments" },
+      {
+        type: "p",
+        text: "Module federation is powerful and easy to get silently wrong: shared dependency hell, two copies of React, a CSS file that leaked because someone imported a helper. An iframe plus a typed envelope (source, version, type, payload) is ugly and explicit. CSS cannot leak. A bad remote cannot freeze the host’s main thread as easily. Operations often wanted that, not a clever webpack graph.",
+      },
+      {
+        type: "p",
+        text: "The type is the product. If theme and navigate messages are not in a shared list both sides compile against, you will invent a stringly-typed mess in a month. Review the message file like an API. Breaking a field is a major version, not a casual rename in one repo.",
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "The host reaching into the iframe document to click a button or read a class.",
+          "A wildcard origin on postMessage “just for local.”",
+          "Theme applied by injecting a style tag into the child from the parent.",
+          "No timeout: the spinner runs forever if the remote never loads.",
+        ],
+      },
+      {
+        type: "p",
+        text: "The public MFE Shell is that pattern in miniature: host, remotes, a theme ping, a ready handshake. Interviewers can read the protocol in one sitting. That is the impressive part — not the word micro-frontend on a slide.",
+      },
+    ],
+  },
+  {
+    slug: "svg-is-a-ui-not-a-png",
+    title: "SVG is a UI surface. Stop treating floor plans like images",
+    date: "September 2026",
+    topic: "Interface",
+    summary:
+      "A plan with rooms, filters, and rotation is not an image tag. It is a document you query, colour, and remember — the same state problems as a dashboard, with worse IDs.",
+    lede: "The first instinct is to export a PNG from design and overlay hotspots. That dies the first time someone asks to recolour rooms, hide a shape type, or rotate the plan without redrawing assets.",
+    relatedLabel: "Task Master",
+    relatedHref: "https://kuttenajith.github.io/task-master/",
+    body: [
+      {
+        type: "p",
+        text: "I built a small explorer for this on purpose: a country → city → building tree, SVG plans per building, a 180° rotate, shape filters, and a colour pass that has to survive when you click the next building. None of that is exotic. All of it is easy to fake in a demo and easy to get wrong in state.",
+      },
+      { type: "h2", text: "The document is the model" },
+      {
+        type: "p",
+        text: "If rooms are SVG nodes with stable ids, filters are queries, not new assets. Circles versus rectangles versus stars is a map from id to kind, then display or a class. Recolour is a pass over known nodes, not a second illustration. Rotate is a transform on a group you own, not a second file named floor-180.svg.",
+      },
+      {
+        type: "p",
+        text: "Unstable ids are how this work becomes a graveyard. If design re-exports and every path is path12 again, your filter map is fiction. Treat the SVG like an API: named rooms, a legend, a version. Push back on “just flatten it.”",
+      },
+      { type: "h2", text: "State that outlives the building" },
+      {
+        type: "ol",
+        items: [
+          "**Own one store for the plan chrome.** Rotation, filter set, palette. The tree only selects which document to mount.",
+          "**Apply chrome after mount.** If you colour nodes that are not in the DOM yet, you will “fix” it with a timeout. That is a bug, not a feature.",
+          "**Persist what the user already decided.** Switching Building B should not reset filters they just set on Building A unless that is an explicit product rule.",
+        ],
+      },
+      { type: "h2", text: "Accessibility is not optional on a drawing" },
+      {
+        type: "p",
+        text: "A floor plan used as UI needs a tree or a list that keyboard users can walk, not only pointer hits on paths. Colour is not the only filter result — a text count of visible rooms saves you when contrast fails. If the SVG is decorative, say so and keep the data in HTML. If it is the product, it needs names.",
+      },
+      {
+        type: "p",
+        text: "Task Master is the public version of that argument: hierarchy, SVG, shared chrome state. It is more useful in an interview than another todo app because the bugs are visible — the colour that did not apply, the filter that vanished on navigation, the rotate that clipped the viewBox.",
+      },
+    ],
+  },
+  {
     slug: "lighthouse-vanity-inp-costs-money",
     title: "Lighthouse 100 is a vanity metric. INP is the one that costs you money",
     date: "August 2026",

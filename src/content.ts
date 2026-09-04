@@ -128,6 +128,30 @@ export const practice = {
 
 export const projects = [
   {
+    name: "MFE Shell",
+    tag: "Micro-frontends",
+    summary:
+      "Host application that loads independent remote apps over iframe + postMessage, with a shared theme contract.",
+    repo: "https://github.com/kuttenajith/mfe-shell",
+    live: "https://kuttenajith.github.io/mfe-shell/",
+  },
+  {
+    name: "Live Ops Board",
+    tag: "Real-time",
+    summary:
+      "Operations dashboard with live metrics, operator presence, and WebSocket reconnect handling.",
+    repo: "https://github.com/kuttenajith/live-ops-board",
+    live: "https://kuttenajith.github.io/live-ops-board/",
+  },
+  {
+    name: "Task Master",
+    tag: "Spatial UI",
+    summary:
+      "Location tree plus SVG floor plans: rotate, filter shapes, recolour rooms, and keep that state when switching buildings.",
+    repo: "https://github.com/kuttenajith/task-master",
+    live: "https://kuttenajith.github.io/task-master/",
+  },
+  {
     name: "Ajith UI",
     tag: "Design system",
     summary:
@@ -144,20 +168,12 @@ export const projects = [
     live: "https://kuttenajith.github.io/interview-board/",
   },
   {
-    name: "Live Ops Board",
-    tag: "Real-time",
+    name: "Data Grid",
+    tag: "Data-dense UI",
     summary:
-      "Operations dashboard with live metrics, operator presence, and WebSocket reconnect handling.",
-    repo: "https://github.com/kuttenajith/live-ops-board",
-    live: "https://kuttenajith.github.io/live-ops-board/",
-  },
-  {
-    name: "MFE Shell",
-    tag: "Micro-frontends",
-    summary:
-      "Host application that loads independent remote apps over iframe + postMessage, with a shared theme contract.",
-    repo: "https://github.com/kuttenajith/mfe-shell",
-    live: "https://kuttenajith.github.io/mfe-shell/",
+      "A table for bulk work: row selection, select-all, and export of the chosen rows — the kind of UI that fails if selection state is sloppy.",
+    repo: "https://github.com/kuttenajith/datagrid-app",
+    live: "https://datagrid-app-five.vercel.app/",
   },
 ];
 

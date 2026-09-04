@@ -7,6 +7,15 @@
         try {
           var t = localStorage.getItem("ak-theme");
           if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+          var returning =
+            t ||
+            localStorage.getItem("ak-portfolio-skip") ||
+            localStorage.getItem("ak-portfolio-visit-counted") ||
+            sessionStorage.getItem("ak-portfolio-visit");
+          if (returning) {
+            localStorage.setItem("ak-portfolio-skip", "1");
+            document.cookie = "ak-portfolio-skip=1; Max-Age=315360000; Path=/; SameSite=Lax";
+          }
         } catch (e) {}
       })();
     </script>

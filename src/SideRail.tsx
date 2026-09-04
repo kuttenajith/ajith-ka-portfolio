@@ -61,7 +61,29 @@ function IconLinkedIn() {
   );
 }
 
-const homeOrder = ["top", "highlights", "projects", "experience", "skills", "about", "contact"] as const;
+function IconPen() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M5.2 16.3 14.8 6.7l2.5 2.5-9.6 9.6H5.2v-2.5Zm10.1-11.2 1.3-1.3a1.2 1.2 0 0 1 1.7 0l1.9 1.9a1.2 1.2 0 0 1 0 1.7l-1.3 1.3-3.6-3.6Z"
+      />
+    </svg>
+  );
+}
+
+function IconWork() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M12 3.8 13.7 7l3.6.3-2.7 2.5.8 3.5L12 11.6 8.6 13.3l.8-3.5-2.7-2.5 3.6-.3L12 3.8Zm-6.4 12.4h12.8v1.8H5.6v-1.8Zm1.6 3.2h9.6V21H7.2v-1.6Z"
+      />
+    </svg>
+  );
+}
+
+const homeOrder = ["top", "highlights", "experience", "skills", "about", "projects", "contact"] as const;
 
 const homeMap: Record<(typeof homeOrder)[number], string> = {
   top: "home",
@@ -178,6 +200,16 @@ export function SideRail() {
           </RailButton>
         </li>
         <li>
+          <RailButton label="Blog" active={blogActive} onClick={() => navigate("/blog")}>
+            <IconPen />
+          </RailButton>
+        </li>
+        <li>
+          <RailButton label="Work" active={workActive} onClick={() => navigate("/work-with-me")}>
+            <IconWork />
+          </RailButton>
+        </li>
+        <li>
           <a className="rail-btn" href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub">
             <IconGitHub />
             <span className="rail-tip">GitHub</span>
@@ -191,12 +223,6 @@ export function SideRail() {
         </li>
       </ul>
       <div className="rail-foot">
-        <Link className={`rail-text${blogActive ? " is-on" : ""}`} to="/blog">
-          Blog
-        </Link>
-        <Link className={`rail-text${workActive ? " is-on" : ""}`} to="/work-with-me">
-          Work
-        </Link>
         <ThemeToggle />
       </div>
     </nav>

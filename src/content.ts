@@ -90,22 +90,32 @@ export const practice = {
   layers: [
     {
       title: "Interface",
-      items: ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3", "Bootstrap"],
+      items: [
+        { skill: "React.js", level: 93 },
+        { skill: "Next.js", level: 88 },
+        { skill: "TypeScript", level: 90 },
+        { skill: "JavaScript (ES6+)", level: 90 },
+        { skill: "HTML5 / CSS3", level: 88 },
+      ],
     },
     {
       title: "Architecture",
       items: [
-        "SSR",
-        "Micro-frontends",
-        "Design systems",
-        "Reusable component libraries",
-        "State management",
-        "REST + WebSockets",
+        { skill: "SSR", level: 85 },
+        { skill: "Micro-frontends", level: 82 },
+        { skill: "Design systems", level: 86 },
+        { skill: "State management", level: 84 },
+        { skill: "REST + WebSockets", level: 83 },
       ],
     },
     {
       title: "Delivery",
-      items: ["GCP (4+ years)", "AWS", "Azure", "CI/CD", "Docker", "Git", "Jira", "Agile / Scrum"],
+      items: [
+        { skill: "Performance (Lighthouse / CWV)", level: 90 },
+        { skill: "CI/CD / Git", level: 80 },
+        { skill: "GCP / AWS / Azure", level: 76 },
+        { skill: "Docker / Agile", level: 74 },
+      ],
     },
   ],
   focus: [
@@ -113,22 +123,6 @@ export const practice = {
     "Performance optimization using Lighthouse, lazy loading, and code splitting.",
     "Reusable frontend systems and component libraries for enterprise applications.",
     "Cross-functional delivery with product, UX, QA, backend, and DevOps teams.",
-  ],
-  table: [
-    { group: "Interface", skill: "React.js", level: 93 },
-    { group: "Interface", skill: "Next.js", level: 88 },
-    { group: "Interface", skill: "TypeScript", level: 90 },
-    { group: "Interface", skill: "JavaScript (ES6+)", level: 90 },
-    { group: "Interface", skill: "HTML5 / CSS3", level: 88 },
-    { group: "Architecture", skill: "SSR", level: 85 },
-    { group: "Architecture", skill: "Micro-frontends", level: 82 },
-    { group: "Architecture", skill: "Design systems", level: 86 },
-    { group: "Architecture", skill: "State management", level: 84 },
-    { group: "Architecture", skill: "REST + WebSockets", level: 83 },
-    { group: "Delivery", skill: "Performance (Lighthouse / CWV)", level: 90 },
-    { group: "Delivery", skill: "CI/CD / Git", level: 80 },
-    { group: "Delivery", skill: "GCP / AWS / Azure", level: 76 },
-    { group: "Delivery", skill: "Docker / Agile", level: 74 },
   ],
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
 import { ContactBlock } from "./ContactForm";
-import { ResumeActions } from "./ResumeActions";
+import { ResumeButton } from "./ResumeActions";
 import { TypeLine } from "./TypeLine";
 
 function useScrollProgress() {
@@ -150,7 +150,7 @@ export function Home() {
               <Link className="btn" to="/blog">
                 Blog
               </Link>
-              <ResumeActions />
+              <ResumeButton />
               <Link className="btn" to="/contact">
                 Contact
               </Link>
@@ -203,40 +203,6 @@ export function Home() {
           </div>
         </section>
 
-        <section id="projects">
-          <div className="wrap">
-            <div className="section-head" data-reveal>
-              <p className="kicker">Projects</p>
-              <div>
-                <h2>Selected work</h2>
-                <p>Public repositories prepared for technical interviews. Each includes source and a live demo.</p>
-              </div>
-            </div>
-            <div className="projects">
-              {projects.map((item, i) => (
-                <article
-                  className="project"
-                  data-reveal
-                  key={item.name}
-                  style={{ "--d": `${i * 90}ms` } as CSSProperties}
-                >
-                  <p className="project__tag">{item.tag}</p>
-                  <h3>{item.name}</h3>
-                  <p>{item.summary}</p>
-                  <div className="project__links">
-                    <a href={item.live} target="_blank" rel="noreferrer">
-                      Live demo
-                    </a>
-                    <a href={item.repo} target="_blank" rel="noreferrer">
-                      GitHub
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="experience">
           <div className="wrap">
             <div className="section-head" data-reveal>
@@ -277,32 +243,30 @@ export function Home() {
                 <p>Frontend, architecture, and delivery capabilities used in production systems.</p>
               </div>
             </div>
-            <div className="skill-table-wrap" data-reveal>
-              <table className="skill-table">
-                <thead>
-                  <tr>
-                    <th>Area</th>
-                    <th>Skill</th>
-                    <th>Proficiency</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {practice.table.map((row) => (
-                    <tr key={`${row.group}-${row.skill}`}>
-                      <td>{row.group}</td>
-                      <td>{row.skill}</td>
-                      <td>
-                        <div className="skill-meter" title={`${row.level}%`}>
+            <div className="layers">
+              {practice.layers.map((layer, i) => (
+                <article
+                  className="layer"
+                  data-reveal
+                  key={layer.title}
+                  style={{ "--d": `${i * 110}ms` } as CSSProperties}
+                >
+                  <h3>{layer.title}</h3>
+                  <ul>
+                    {layer.items.map((item) => (
+                      <li key={item.skill}>
+                        <span>{item.skill}</span>
+                        <div className="skill-meter" title={`${item.level}%`}>
                           <span className="skill-meter__track">
-                            <span style={{ width: `${row.level}%` }} />
+                            <span style={{ width: `${item.level}%` }} />
                           </span>
-                          <em>{row.level}%</em>
+                          <em>{item.level}%</em>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
             </div>
             <ul className="focus">
               {practice.focus.map((item, i) => (
@@ -343,7 +307,41 @@ export function Home() {
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 linkedin.com/in/ajith-amarnath-18b71713b
               </a>
-              <ResumeActions />
+              <ResumeButton variant="link" />
+            </div>
+          </div>
+        </section>
+
+        <section id="projects">
+          <div className="wrap">
+            <div className="section-head" data-reveal>
+              <p className="kicker">Projects</p>
+              <div>
+                <h2>Selected work</h2>
+                <p>Public repositories prepared for technical interviews. Each includes source and a live demo.</p>
+              </div>
+            </div>
+            <div className="projects">
+              {projects.map((item, i) => (
+                <article
+                  className="project"
+                  data-reveal
+                  key={item.name}
+                  style={{ "--d": `${i * 90}ms` } as CSSProperties}
+                >
+                  <p className="project__tag">{item.tag}</p>
+                  <h3>{item.name}</h3>
+                  <p>{item.summary}</p>
+                  <div className="project__links">
+                    <a href={item.live} target="_blank" rel="noreferrer">
+                      Live demo
+                    </a>
+                    <a href={item.repo} target="_blank" rel="noreferrer">
+                      GitHub
+                    </a>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>

@@ -131,6 +131,13 @@ function deviceLine() {
   ].join("\n");
 }
 
+function isDatacenter(geo: Geo) {
+  const isp = `${geo.isp || ""}`.toLowerCase();
+  return /microsoft|github|amazon|google llc|google cloud|cloudflare|digitalocean|ovh|hetzner|linode|oracle|alibaba/.test(
+    isp,
+  );
+}
+
 export async function notifyNewVisit() {
   const key = accessKey();
   if (!key) return;
@@ -138,14 +145,19 @@ export async function notifyNewVisit() {
   rememberFirstTouch();
   const touch = readFirstTouch();
   const geo = await lookupGeo();
+  if (isDatacenter(geo) && !touch?.referrer && !touch?.utm_source) return;
+
   const now = new Date().toISOString();
   const here = `${window.location.pathname}${window.location.search}${window.location.hash}`;
   const place = [geo.city, geo.region, geo.country].filter(Boolean).join(", ") || "—";
 
   const message = [
-    "A new unique browser opened the live portfolio.",
+    "THIS IS NOT A CONTACT FORM. Nobody filled Name / Company / Role / Message.",
+    "Web3Forms always writes “A new form has been submitted” — ignore that line for these pings.",
+    "A real enquiry has subject: Portfolio contact — … and a person’s name + work email.",
     "",
-    "Visitor email: not available. Browsers do not send it on a page view. You only get an email address if they submit the contact form.",
+    "This mail means: a new unique browser opened the live site.",
+    "Visitor email is not available on a page view.",
     "",
     `When: ${now}`,
     `Page now: ${here}`,
@@ -167,11 +179,10 @@ export async function notifyNewVisit() {
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         access_key: key,
-        subject: `Portfolio visit — ${touch?.source || "unknown"}`,
-        from_name: "Portfolio visit ping",
-        name: "Unique visitor",
-        email: "ajithkutten1998@gmail.com",
-        replyto: "ajithkutten1998@gmail.com",
+        subject: `[VISIT only — not a form] ${touch?.source || "unknown"}`,
+        from_name: "Visit ping (not a contact form)",
+        name: "[VISIT] not a contact form",
+        email: "not-captured@visitor.invalid",
         botcheck: false,
         kind: "visit",
         source: touch?.source || "unknown",

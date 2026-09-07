@@ -1,10 +1,12 @@
 import { type MouseEvent } from "react";
 import { profile } from "./content";
+import { noteResume } from "./notifyVisit";
 
 const resumeFile = "Ajith-Amarnath-Senior-Frontend.pdf";
 
 async function downloadResume(event: MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
+  noteResume("download");
   try {
     const response = await fetch(profile.resume);
     if (!response.ok) throw new Error("resume");
@@ -33,7 +35,7 @@ export function ResumeButton() {
 export function ResumeWithDownload() {
   return (
     <span className="resume-pair">
-      <a href={profile.resume} target="_blank" rel="noreferrer">
+      <a href={profile.resume} target="_blank" rel="noreferrer" onClick={() => noteResume("preview")}>
         Resume (PDF)
       </a>
       <a className="resume-dl" href={profile.resume} download={resumeFile} onClick={downloadResume} aria-label="Download resume PDF">

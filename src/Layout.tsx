@@ -4,6 +4,7 @@ import { BackToTop } from "./BackToTop";
 import { SideRail } from "./SideRail";
 import { SiteVisits } from "./SiteVisits";
 import { ThemeToggle } from "./ThemeToggle";
+import { VisitTracker } from "./VisitTracker";
 import { profile } from "./content";
 import { scrollToId } from "./scroll";
 
@@ -57,6 +58,7 @@ export function Layout() {
   return (
     <>
       <ScrollToTop />
+      <VisitTracker />
       <a className="skip" href="#top">
         Skip to content
       </a>

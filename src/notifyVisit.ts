@@ -90,6 +90,8 @@ type Geo = {
   region?: string;
   country?: string;
   isp?: string;
+  org?: string;
+  domain?: string;
 };
 
 async function lookupGeo(): Promise<Geo> {
@@ -103,7 +105,7 @@ async function lookupGeo(): Promise<Geo> {
       city?: string;
       region?: string;
       country?: string;
-      connection?: { isp?: string };
+      connection?: { isp?: string; org?: string; domain?: string };
     };
     if (data.success === false) return {};
     return {
@@ -112,6 +114,8 @@ async function lookupGeo(): Promise<Geo> {
       region: data.region,
       country: data.country,
       isp: data.connection?.isp,
+      org: data.connection?.org,
+      domain: data.connection?.domain,
     };
   } catch {
     return {};
@@ -132,41 +136,149 @@ function deviceLine() {
 }
 
 function isDatacenter(geo: Geo) {
-  const isp = `${geo.isp || ""}`.toLowerCase();
-  return /microsoft|github|amazon|google llc|google cloud|cloudflare|digitalocean|ovh|hetzner|linode|oracle|alibaba/.test(
+  const isp = `${geo.isp || ""} ${geo.org || ""}`.toLowerCase();
+  return /microsoft|github|google llc|google cloud|cloudflare|digitalocean|ovh|hetzner|linode|oracle|alibaba/.test(
     isp,
   );
 }
 
-export async function notifyNewVisit() {
+const PENDING = "ak-visit-report-pending";
+const MAILED = "ak-visit-report-mailed";
+const PAGES = "ak-session-pages";
+const STARTED = "ak-session-started";
+const RESUME = "ak-session-resume";
+
+function currentPath() {
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+}
+
+function readPages(): string[] {
+  try {
+    const raw = sessionStorage.getItem(PAGES);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as string[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function notePage(path = currentPath()) {
+  try {
+    const pages = readPages();
+    if (pages[pages.length - 1] === path) return;
+    pages.push(path);
+    sessionStorage.setItem(PAGES, JSON.stringify(pages.slice(-24)));
+    if (!sessionStorage.getItem(STARTED)) sessionStorage.setItem(STARTED, String(Date.now()));
+  } catch {
+    /* private mode */
+  }
+}
+
+export function noteResume(kind: "preview" | "download") {
+  try {
+    const prev = sessionStorage.getItem(RESUME);
+    sessionStorage.setItem(RESUME, prev && prev !== kind ? "both" : kind);
+  } catch {
+    /* private mode */
+  }
+  void flushVisitReport();
+}
+
+function timeSpent() {
+  const started = Number(sessionStorage.getItem(STARTED) || Date.now());
+  const ms = Math.max(0, Date.now() - started);
+  const seconds = Math.round(ms / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return `${minutes}m ${rest}s`;
+}
+
+function resumeLabel() {
+  const value = sessionStorage.getItem(RESUME);
+  if (value === "download") return "Downloaded PDF";
+  if (value === "preview") return "Opened PDF preview";
+  if (value === "both") return "Previewed and downloaded PDF";
+  return "Did not open resume";
+}
+
+let armed = false;
+
+export function armVisitReport() {
+  try {
+    sessionStorage.setItem(PENDING, "1");
+    if (!sessionStorage.getItem(STARTED)) sessionStorage.setItem(STARTED, String(Date.now()));
+  } catch {
+    return;
+  }
+  notePage();
+  if (armed) return;
+  armed = true;
+  window.setTimeout(() => void flushVisitReport(), 28000);
+  const onLeave = () => void flushVisitReport();
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") onLeave();
+  });
+  window.addEventListener("pagehide", onLeave);
+}
+
+async function flushVisitReport() {
+  try {
+    if (sessionStorage.getItem(PENDING) !== "1") return;
+    if (sessionStorage.getItem(MAILED) === "1") return;
+  } catch {
+    return;
+  }
+
   const key = accessKey();
   if (!key) return;
 
   rememberFirstTouch();
   const touch = readFirstTouch();
   const geo = await lookupGeo();
-  if (isDatacenter(geo) && !touch?.referrer && !touch?.utm_source) return;
+  if (isDatacenter(geo) && !touch?.referrer && !touch?.utm_source) {
+    try {
+      sessionStorage.setItem(MAILED, "1");
+    } catch {
+      /* ignore */
+    }
+    return;
+  }
 
-  const now = new Date().toISOString();
-  const here = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  try {
+    sessionStorage.setItem(MAILED, "1");
+  } catch {
+    /* ignore */
+  }
+
+  const company = geo.org || geo.isp || "Unknown (home / mobile / VPN)";
   const place = [geo.city, geo.region, geo.country].filter(Boolean).join(", ") || "—";
+  const pages = readPages();
+  const trail = pages.length ? pages.join(" → ") : currentPath();
+  const now = new Date().toISOString();
 
   const message = [
-    "THIS IS NOT A CONTACT FORM. Nobody filled Name / Company / Role / Message.",
-    "Web3Forms always writes “A new form has been submitted” — ignore that line for these pings.",
-    "A real enquiry has subject: Portfolio contact — … and a person’s name + work email.",
+    "THIS IS NOT A CONTACT FORM.",
+    "Web3Forms always writes “A new form has been submitted” — ignore that line.",
+    "A real enquiry has subject: Portfolio contact — … with a person’s work email.",
     "",
-    "This mail means: a new unique browser opened the live site.",
-    "Visitor email is not available on a page view.",
+    "What this is: one unique browser session on the live portfolio.",
+    "Person name, personal email, phone, and LinkedIn cannot be read from a page view.",
+    "Company below is the network owner on the IP (office ISP), not a matched employee.",
     "",
+    `Company (from IP): ${company}`,
+    `Network domain: ${geo.domain || "—"}`,
+    `Location: ${place}`,
+    `Time spent: ${timeSpent()}`,
+    `Pages: ${trail}`,
+    `Resume: ${resumeLabel()}`,
     `When: ${now}`,
-    `Page now: ${here}`,
     "",
     "How they arrived",
     formatArrival(touch),
     "",
-    "Network (approximate)",
-    `Place: ${place}`,
+    "Network",
     `IP: ${geo.ip || "—"}`,
     `ISP: ${geo.isp || "—"}`,
     "",
@@ -179,17 +291,23 @@ export async function notifyNewVisit() {
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         access_key: key,
-        subject: `[VISIT only — not a form] ${touch?.source || "unknown"}`,
-        from_name: "Visit ping (not a contact form)",
+        subject: `[VISIT] ${company} · ${touch?.source || "unknown"}`,
+        from_name: "Visit report (not a contact form)",
         name: "[VISIT] not a contact form",
         email: "not-captured@visitor.invalid",
         botcheck: false,
         kind: "visit",
+        company,
         source: touch?.source || "unknown",
         message,
       }),
+      keepalive: true,
     });
   } catch {
     /* visit mail is best-effort */
   }
+}
+
+export function notifyNewVisit() {
+  armVisitReport();
 }

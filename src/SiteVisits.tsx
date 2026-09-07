@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { rememberFirstTouch, notifyNewVisit } from "./notifyVisit";
+import { rememberFirstTouch, armVisitReport } from "./notifyVisit";
 
 const NAMESPACE = "kuttenajith.github.io";
 const KEY = "ajith-ka-portfolio";
@@ -75,7 +75,7 @@ function loadVisits() {
   const action = skip ? "get" : "hit";
   if (!skip) {
     rememberBrowser();
-    void notifyNewVisit();
+    armVisitReport();
   }
 
   visitsPromise = fetch(`${ENDPOINT}/${action}/${NAMESPACE}/${KEY}`)

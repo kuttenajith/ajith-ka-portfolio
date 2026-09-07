@@ -1,4 +1,5 @@
 import { web3formsAccessKey } from "./contact.config";
+import { formatArrival, rememberFirstTouch, readFirstTouch } from "./notifyVisit";
 import type { ContactFields } from "./validateContact";
 import { sanitizePhone } from "./validateContact";
 
@@ -25,6 +26,8 @@ export async function sendContact(fields: ContactFields) {
     );
   }
 
+  rememberFirstTouch();
+  const arrival = formatArrival(readFirstTouch());
   const replyBy = fields.replyBy === "callback" ? "Call back requested" : "Email";
   const phone = sanitizePhone(fields.phone).trim() || "—";
   const roleLabel = fields.role === "Other" ? `Other — ${fields.roleOther.trim()}` : fields.role;
@@ -43,7 +46,7 @@ export async function sendContact(fields: ContactFields) {
       role: roleLabel,
       reply_by: replyBy,
       phone,
-      message: fields.message.trim(),
+      message: `${fields.message.trim()}\n\n---\nHow they reached the site\n${arrival}`,
       botcheck: false,
     }),
   });

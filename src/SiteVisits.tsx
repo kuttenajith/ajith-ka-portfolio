@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { rememberFirstTouch, notifyNewVisit } from "./notifyVisit";
 
 const NAMESPACE = "kuttenajith.github.io";
 const KEY = "ajith-ka-portfolio";
@@ -62,6 +63,8 @@ function stripOwnerQuery() {
 function loadVisits() {
   if (visitsPromise) return visitsPromise;
 
+  rememberFirstTouch();
+
   const owner = isOwnerVisit();
   if (owner) {
     rememberBrowser();
@@ -70,7 +73,10 @@ function loadVisits() {
 
   const skip = owner || !isLive() || isBot() || isKnownBrowser();
   const action = skip ? "get" : "hit";
-  if (!skip) rememberBrowser();
+  if (!skip) {
+    rememberBrowser();
+    void notifyNewVisit();
+  }
 
   visitsPromise = fetch(`${ENDPOINT}/${action}/${NAMESPACE}/${KEY}`)
     .then((response) => {

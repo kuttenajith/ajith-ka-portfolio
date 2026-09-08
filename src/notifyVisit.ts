@@ -1,6 +1,12 @@
 import { web3formsAccessKey } from "./contact.config";
+import { profile } from "./content";
 
 const TOUCH = "ak-first-touch";
+const PENDING = "ak-visit-report-pending";
+const MAILED = "ak-visit-report-mailed";
+const PAGES = "ak-session-pages";
+const STARTED = "ak-session-started";
+const RESUME = "ak-session-resume";
 
 export type Arrival = {
   at: string;
@@ -12,6 +18,21 @@ export type Arrival = {
   utm_campaign: string;
   utm_content: string;
 };
+
+type Geo = {
+  ip?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  isp?: string;
+  org?: string;
+  domain?: string;
+};
+
+let geoCache: Geo | null = null;
+let geoPromise: Promise<Geo> | null = null;
+let armed = false;
+let sending = false;
 
 function accessKey() {
   const fromEnv = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
@@ -72,7 +93,7 @@ export function readFirstTouch(): Arrival | null {
 
 export function formatArrival(touch: Arrival | null) {
   if (!touch) return "Not captured.";
-  const lines = [
+  return [
     `Source: ${touch.source}`,
     `Landing page: ${touch.page}`,
     `Referrer: ${touch.referrer || "—"}`,
@@ -80,59 +101,38 @@ export function formatArrival(touch: Arrival | null) {
     `UTM medium: ${touch.utm_medium || "—"}`,
     `UTM campaign: ${touch.utm_campaign || "—"}`,
     `First seen: ${touch.at}`,
-  ];
-  return lines.join("\n");
-}
-
-type Geo = {
-  ip?: string;
-  city?: string;
-  region?: string;
-  country?: string;
-  isp?: string;
-  org?: string;
-  domain?: string;
-};
-
-async function lookupGeo(): Promise<Geo> {
-  const controller = new AbortController();
-  const timer = window.setTimeout(() => controller.abort(), 2500);
-  try {
-    const response = await fetch("https://ipwho.is/", { signal: controller.signal });
-    const data = (await response.json()) as {
-      success?: boolean;
-      ip?: string;
-      city?: string;
-      region?: string;
-      country?: string;
-      connection?: { isp?: string; org?: string; domain?: string };
-    };
-    if (data.success === false) return {};
-    return {
-      ip: data.ip,
-      city: data.city,
-      region: data.region,
-      country: data.country,
-      isp: data.connection?.isp,
-      org: data.connection?.org,
-      domain: data.connection?.domain,
-    };
-  } catch {
-    return {};
-  } finally {
-    window.clearTimeout(timer);
-  }
-}
-
-function deviceLine() {
-  const ua = navigator.userAgent;
-  const width = window.screen.width;
-  const height = window.screen.height;
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return [
-    `Device: ${width}×${height}, ${navigator.language}, ${tz}`,
-    `User agent: ${ua}`,
   ].join("\n");
+}
+
+function lookupGeo(): Promise<Geo> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), 1800);
+  return fetch("https://ipwho.is/", { signal: controller.signal })
+    .then((response) => response.json())
+    .then((data: { success?: boolean; ip?: string; city?: string; region?: string; country?: string; connection?: { isp?: string; org?: string; domain?: string } }) => {
+      if (data.success === false) return {};
+      return {
+        ip: data.ip,
+        city: data.city,
+        region: data.region,
+        country: data.country,
+        isp: data.connection?.isp,
+        org: data.connection?.org,
+        domain: data.connection?.domain,
+      };
+    })
+    .catch(() => ({}))
+    .finally(() => window.clearTimeout(timer));
+}
+
+function ensureGeo() {
+  if (!geoPromise) {
+    geoPromise = lookupGeo().then((geo) => {
+      geoCache = geo;
+      return geo;
+    });
+  }
+  return geoPromise;
 }
 
 function isDatacenter(geo: Geo) {
@@ -142,11 +142,23 @@ function isDatacenter(geo: Geo) {
   );
 }
 
-const PENDING = "ak-visit-report-pending";
-const MAILED = "ak-visit-report-mailed";
-const PAGES = "ak-session-pages";
-const STARTED = "ak-session-started";
-const RESUME = "ak-session-resume";
+function isSilentProbe(geo: Geo, touch: Arrival | null) {
+  return isDatacenter(geo) && !touch?.referrer && !touch?.utm_source;
+}
+
+export async function shouldCountAndMail(): Promise<boolean> {
+  rememberFirstTouch();
+  const geo = await ensureGeo();
+  const silent = isSilentProbe(geo, readFirstTouch());
+  if (silent) {
+    try {
+      sessionStorage.setItem(MAILED, "1");
+    } catch {
+      /* ignore */
+    }
+  }
+  return !silent;
+}
 
 function currentPath() {
   return `${window.location.pathname}${window.location.search}${window.location.hash}`;
@@ -187,12 +199,9 @@ export function noteResume(kind: "preview" | "download") {
 
 function timeSpent() {
   const started = Number(sessionStorage.getItem(STARTED) || Date.now());
-  const ms = Math.max(0, Date.now() - started);
-  const seconds = Math.round(ms / 1000);
+  const seconds = Math.round(Math.max(0, Date.now() - started) / 1000);
   if (seconds < 60) return `${seconds}s`;
-  const minutes = Math.floor(seconds / 60);
-  const rest = seconds % 60;
-  return `${minutes}m ${rest}s`;
+  return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
 }
 
 function resumeLabel() {
@@ -203,7 +212,11 @@ function resumeLabel() {
   return "Did not open resume";
 }
 
-let armed = false;
+function visitReplyEmail() {
+  const [local, domain] = profile.email.split("@");
+  if (!local || !domain) return profile.email;
+  return `${local}+visit@${domain}`;
+}
 
 export function armVisitReport() {
   try {
@@ -213,9 +226,10 @@ export function armVisitReport() {
     return;
   }
   notePage();
+  void ensureGeo();
   if (armed) return;
   armed = true;
-  window.setTimeout(() => void flushVisitReport(), 28000);
+  window.setTimeout(() => void flushVisitReport(), 8000);
   const onLeave = () => void flushVisitReport();
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") onLeave();
@@ -232,24 +246,22 @@ async function flushVisitReport() {
   }
 
   const key = accessKey();
-  if (!key) return;
+  if (!key || sending) return;
 
+  sending = true;
   rememberFirstTouch();
   const touch = readFirstTouch();
-  const geo = await lookupGeo();
-  if (isDatacenter(geo) && !touch?.referrer && !touch?.utm_source) {
+  const hiding = document.visibilityState === "hidden";
+  const geo = geoCache ?? (hiding ? {} : await ensureGeo());
+
+  if (isSilentProbe(geo, touch)) {
     try {
       sessionStorage.setItem(MAILED, "1");
     } catch {
       /* ignore */
     }
+    sending = false;
     return;
-  }
-
-  try {
-    sessionStorage.setItem(MAILED, "1");
-  } catch {
-    /* ignore */
   }
 
   const company = geo.org || geo.isp || "Unknown (home / mobile / VPN)";
@@ -257,57 +269,64 @@ async function flushVisitReport() {
   const pages = readPages();
   const trail = pages.length ? pages.join(" → ") : currentPath();
   const now = new Date().toISOString();
-
-  const message = [
-    "THIS IS NOT A CONTACT FORM.",
-    "Web3Forms always writes “A new form has been submitted” — ignore that line.",
-    "A real enquiry has subject: Portfolio contact — … with a person’s work email.",
-    "",
-    "What this is: one unique browser session on the live portfolio.",
-    "Person name, personal email, phone, and LinkedIn cannot be read from a page view.",
-    "Company below is the network owner on the IP (office ISP), not a matched employee.",
-    "",
-    `Company (from IP): ${company}`,
-    `Network domain: ${geo.domain || "—"}`,
-    `Location: ${place}`,
-    `Time spent: ${timeSpent()}`,
-    `Pages: ${trail}`,
-    `Resume: ${resumeLabel()}`,
-    `When: ${now}`,
-    "",
-    "How they arrived",
-    formatArrival(touch),
-    "",
-    "Network",
-    `IP: ${geo.ip || "—"}`,
-    `ISP: ${geo.isp || "—"}`,
-    "",
-    deviceLine(),
-  ].join("\n");
+  const payload = {
+    access_key: key,
+    subject: `[VISIT] ${company} · ${touch?.source || "unknown"}`,
+    from_name: "Visit report (not a contact form)",
+    name: "Portfolio visit report",
+    email: visitReplyEmail(),
+    botcheck: false,
+    kind: "visit",
+    company,
+    source: touch?.source || "unknown",
+    message: [
+      "THIS IS NOT A CONTACT FORM.",
+      "Web3Forms always writes “A new form has been submitted” — ignore that line.",
+      "A real enquiry has subject: Portfolio contact — … with a person’s work email.",
+      "",
+      "What this is: one unique browser session on the live portfolio.",
+      "Person name, personal email, phone, and LinkedIn cannot be read from a page view.",
+      "Company below is the network owner on the IP (office ISP), not a matched employee.",
+      "",
+      `Company (from IP): ${company}`,
+      `Network domain: ${geo.domain || "—"}`,
+      `Location: ${place}`,
+      `Time spent: ${timeSpent()}`,
+      `Pages: ${trail}`,
+      `Resume: ${resumeLabel()}`,
+      `When: ${now}`,
+      "",
+      "How they arrived",
+      formatArrival(touch),
+      "",
+      "Network",
+      `IP: ${geo.ip || "—"}`,
+      `ISP: ${geo.isp || "—"}`,
+      "",
+      `Device: ${window.screen.width}×${window.screen.height}, ${navigator.language}, ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
+      `User agent: ${navigator.userAgent}`,
+    ].join("\n"),
+  };
 
   try {
-    await fetch("https://api.web3forms.com/submit", {
+    const request = fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: key,
-        subject: `[VISIT] ${company} · ${touch?.source || "unknown"}`,
-        from_name: "Visit report (not a contact form)",
-        name: "[VISIT] not a contact form",
-        email: "not-captured@visitor.invalid",
-        botcheck: false,
-        kind: "visit",
-        company,
-        source: touch?.source || "unknown",
-        message,
-      }),
+      body: JSON.stringify(payload),
       keepalive: true,
     });
+    if (hiding) {
+      sessionStorage.setItem(MAILED, "1");
+      return;
+    }
+    const response = await request;
+    const data = (await response.json()) as { success?: boolean };
+    if (response.ok && data.success === true) {
+      sessionStorage.setItem(MAILED, "1");
+    }
   } catch {
-    /* visit mail is best-effort */
+    /* leave MAILED unset so the 8s timer can retry while the tab is still open */
+  } finally {
+    sending = false;
   }
-}
-
-export function notifyNewVisit() {
-  armVisitReport();
 }

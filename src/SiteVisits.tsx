@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { rememberFirstTouch, armVisitReport } from "./notifyVisit";
+import { armVisitReport, rememberFirstTouch, shouldCountAndMail } from "./notifyVisit";
 
 const NAMESPACE = "kuttenajith.github.io";
 const KEY = "ajith-ka-portfolio";
@@ -15,7 +15,8 @@ function isLive() {
 }
 
 function isBot() {
-  return /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|pingdom/i.test(
+  if (navigator.webdriver) return true;
+  return /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|facebookexternalhit|pingdom|bytespider|ahrefs|semrush|yandex|applebot|linkedinbot|slackbot|discordbot|telegrambot|prerender|phantom|selenium|puppeteer|playwright|gtmetrix|uptimerobot|statuscake|axios\/|node-fetch|go-http-client|python-|libwww|wget|curl|httpie|okhttp|petalbot|dotbot|mj12bot/i.test(
     navigator.userAgent,
   );
 }
@@ -60,31 +61,35 @@ function stripOwnerQuery() {
   window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+async function fetchCount(action: "get" | "hit") {
+  const response = await fetch(`${ENDPOINT}/${action}/${NAMESPACE}/${KEY}`);
+  if (!response.ok) throw new Error("counter");
+  const data = (await response.json()) as { value: number };
+  return data.value;
+}
+
 function loadVisits() {
   if (visitsPromise) return visitsPromise;
 
-  rememberFirstTouch();
+  visitsPromise = (async () => {
+    rememberFirstTouch();
 
-  const owner = isOwnerVisit();
-  if (owner) {
-    rememberBrowser();
-    stripOwnerQuery();
-  }
+    const owner = isOwnerVisit();
+    if (owner) {
+      rememberBrowser();
+      stripOwnerQuery();
+    }
 
-  const skip = owner || !isLive() || isBot() || isKnownBrowser();
-  const action = skip ? "get" : "hit";
-  if (!skip) {
+    const skip = owner || !isLive() || isBot() || isKnownBrowser();
+    if (skip) return fetchCount("get");
+
     rememberBrowser();
+    const eligible = await shouldCountAndMail();
+    if (!eligible) return fetchCount("get");
+
     armVisitReport();
-  }
-
-  visitsPromise = fetch(`${ENDPOINT}/${action}/${NAMESPACE}/${KEY}`)
-    .then((response) => {
-      if (!response.ok) throw new Error("counter");
-      return response.json() as Promise<{ value: number }>;
-    })
-    .then((data) => data.value)
-    .catch(() => null);
+    return fetchCount("hit");
+  })().catch(() => null);
 
   return visitsPromise;
 }

@@ -18,6 +18,72 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "page-view-is-not-a-person",
+    title: "A page view is not a person. Your portfolio cannot name the recruiter",
+    date: "September 2026",
+    topic: "Product",
+    summary:
+      "Analytics can tell you country, device, referrer, and which pages they opened. A tracking script cannot invent a name, a work email, or a LinkedIn URL. If a vendor promises John Doe from Amazon, that is a paid company-IP guess — and it still fails on home Wi-Fi.",
+    lede: "Job-hunt dashboards love the fantasy: Amazon employee, name, title, LinkedIn, 3m 42s on /resume. That is not what a browser gives you. I shipped the honest version instead.",
+    relatedLabel: "Live portfolio",
+    relatedHref: "https://kuttenajith.github.io/ajith-ka-portfolio/",
+    body: [
+      {
+        type: "p",
+        text: "I wanted the same thing every engineer on the market wants: when a recruiter opens the site, tell me who it was. Google Analytics will not. GitHub Pages cannot. A form key that emails me on first visit still cannot. Personally identifiable information is not sitting in the request headers waiting to be parsed.",
+      },
+      { type: "h2", text: "What a visit actually contains" },
+      {
+        type: "p",
+        text: "A normal page load gives you coarse location, a user agent, a timestamp, the path, how long the tab stayed open, and a referrer if the browser still sends one. LinkedIn, Google, and “typed the URL” are useful. Returning versus new is a cookie or a unique-browser flag, not a passport.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**You can know:** Bengaluru-ish, desktop Chrome, arrived from linkedin.com, opened Home → Projects, downloaded the PDF, left after four minutes.",
+          "**You cannot know:** their name, personal email, phone, or which LinkedIn profile belongs to that tab.",
+          "**Company is optional and noisy.** ipwho.is (or similar) can name the network owner on the IP. That is “Amazon’s office NAT” or “Jio mobile,” not an employee record.",
+        ],
+      },
+      { type: "h2", text: "The product people sell you" },
+      {
+        type: "p",
+        text: "B2B visitor-intelligence tools match corporate IPs against company databases. On a good day you get: this session looks like Company X, maybe a likely persona. On a normal day you get nothing, because the recruiter is on a phone, a VPN, a coffee-shop, or a home fibre that resolves to an ISP, not a brand. Some products only ever claim the company. Treat person-level names as a marketing screenshot.",
+      },
+      {
+        type: "p",
+        text: "If you paste that snippet onto a personal site, you also inherit their privacy and consent model. Do not build a secret people-finder and call it analytics. The impressive move is to say what you collected and what you refused to invent.",
+      },
+      { type: "h2", text: "What I actually email myself" },
+      {
+        type: "p",
+        text: "This portfolio is static Vite on GitHub Pages. There is no server to log against. For a new unique browser I wait out a short session, then send one Web3Forms message with subject `[VISIT] {org} · {source}`. The body is company-from-IP, city, pages, time spent, resume preview or download, and first-touch UTM. The from-address is a dummy. A real enquiry still has subject `Portfolio contact` and a human email. Mixing those two in your inbox is how you think a Microsoft crawler submitted the form.",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Delay the ping.** An instant hit on load is a datacenter and a preview bot. Twenty-plus seconds, or resume click, or tab hide, is a session.",
+          "**Skip empty datacenter traffic.** No referrer, no UTM, ISP is GitHub/Microsoft/Cloudflare: do not mail yourself. Do not skip Amazon just because the word appears in some cloud lists — that is a recruiter you wanted.",
+          "**Name the limit in the email.** “Company below is the network owner, not a matched employee.” Future-you will thank present-you when a vendor demo looks more complete than your inbox.",
+        ],
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "Storing a visitor’s personal email because they typed it last month and you reverse-looked the IP.",
+          "Putting your own Gmail in the visit payload so Web3Forms looks like a contact form.",
+          "A dashboard titled “John viewed your resume” when the only fact is a PDF GET from an office NAT.",
+          "No owner skip, so you email yourself every time you hard-refresh the live site.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Share the site with `?utm_source=linkedin` if you want the referrer to survive. Then read the visit mail as an ops signal: which companies’ networks showed up, whether they opened the PDF, which pages they walked. Hire for the engineer who can tell the difference between that and a name. The name still has to come from the contact form.",
+      },
+    ],
+  },
+  {
     slug: "typed-iframe-contracts",
     title: "If the host imports the remote, you do not have a platform",
     date: "September 2026",

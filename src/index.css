@@ -11,6 +11,7 @@
   --on-accent: #1a120c;
   --nav-bg: rgb(14 17 16 / 88%);
   --photo-scrim: linear-gradient(180deg, rgb(14 17 16 / 0%) 55%, rgb(14 17 16 / 38%) 100%);
+  --photo-shadow: rgb(0 0 0 / 42%);
   --page-pad: clamp(20px, 3.5vw, 40px);
   --content: 1180px;
   --rail: 0px;
@@ -32,6 +33,7 @@ html[data-theme="light"] {
   --on-accent: #fffaf3;
   --nav-bg: rgb(244 239 230 / 90%);
   --photo-scrim: linear-gradient(180deg, rgb(244 239 230 / 0%) 55%, rgb(244 239 230 / 32%) 100%);
+  --photo-shadow: rgb(28 25 20 / 22%);
   color-scheme: light;
 }
 
@@ -460,10 +462,10 @@ html[data-theme="light"] .theme-switch__knob {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  align-items: center;
-  gap: 40px;
-  padding: 56px 0 64px;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+  align-items: end;
+  gap: 28px 48px;
+  padding: 48px 0 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -478,6 +480,7 @@ html[data-theme="light"] .theme-switch__knob {
 
 .hero-copy {
   min-width: 0;
+  padding-bottom: 28px;
 }
 
 .hero h1 {
@@ -575,95 +578,41 @@ html[data-theme="light"] .theme-switch__knob {
   margin: 0;
   justify-self: end;
   width: 100%;
-  max-width: 300px;
-  overflow: hidden;
+  max-width: 360px;
+  overflow: visible;
 }
 
 .portrait__stage {
   position: relative;
 }
 
-.portrait__offset {
+.portrait__mark {
   position: absolute;
-  inset: 16px 8px -8px 16px;
-  border: 1px solid var(--accent);
-  pointer-events: none;
-}
-
-.portrait__clip {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  aspect-ratio: 3 / 4;
-  background: var(--bg-2);
-}
-
-.portrait__clip::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--photo-scrim);
+  inset: 6% 8% 10% 10%;
+  border: 1px solid var(--line);
+  border-radius: 46% 42% 38% 48%;
+  transform: rotate(-7deg);
   pointer-events: none;
 }
 
 .portrait img {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 12%;
-  filter: saturate(0.88) contrast(1.06);
-  transform: scale(1.04);
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.portrait:hover img {
-  transform: scale(1.08);
+  height: auto;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 22px 32px var(--photo-shadow)) saturate(0.92) contrast(1.04);
 }
 
 html[data-theme="light"] .portrait img {
-  filter: saturate(0.94) contrast(1.02);
-}
-
-.portrait__tick {
-  position: absolute;
-  z-index: 2;
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--accent);
-  pointer-events: none;
-}
-
-.portrait__tick--tl {
-  top: 10px;
-  left: 10px;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.portrait__tick--tr {
-  top: 10px;
-  right: 10px;
-  border-left: 0;
-  border-bottom: 0;
-}
-
-.portrait__tick--bl {
-  bottom: 10px;
-  left: 10px;
-  border-right: 0;
-  border-top: 0;
-}
-
-.portrait__tick--br {
-  bottom: 10px;
-  right: 10px;
-  border-left: 0;
-  border-top: 0;
+  filter: drop-shadow(0 18px 28px var(--photo-shadow)) saturate(0.96) contrast(1.02);
 }
 
 .portrait figcaption {
-  margin-top: 22px;
-  padding-left: 22px;
+  margin-top: 18px;
+  padding-left: 8px;
   font-size: 14px;
   color: var(--ink-soft);
 }
@@ -758,14 +707,77 @@ section {
 }
 
 .post-card {
-  padding: 28px 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  overflow: hidden;
+}
+
+.posts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.post-card__visual {
+  display: block;
+  aspect-ratio: 16 / 10;
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
+}
+
+.post-card__body {
+  padding: 22px 22px 24px;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--ink);
+}
+
+.cover__ground {
+  fill: var(--bg);
+}
+
+.cover__line {
+  stroke: var(--line);
+  fill: none;
+}
+
+.cover__line-fill {
+  fill: var(--line);
+}
+
+.cover__soft {
+  fill: var(--bg-2);
+  stroke: var(--line);
+}
+
+.cover__accent,
+.cover__accent-fill {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.cover__accent-stroke {
+  fill: none;
+  stroke: var(--accent);
+}
+
+.article__visual {
+  margin: 8px 0 28px;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 
 .post-card h2 {
   margin: 8px 0 12px;
   font-family: var(--display);
-  font-size: 28px;
+  font-size: 22px;
   letter-spacing: -0.03em;
 }
 
@@ -854,22 +866,34 @@ section {
 
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: clamp(12px, 1.5vw, 20px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 1.8vw, 24px);
 }
 
 .project {
   background: var(--bg-2);
   border: 1px solid var(--line);
-  padding: 24px;
+  padding: 0;
   display: grid;
-  gap: 10px;
+  overflow: hidden;
   transition: border-color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project:hover {
   border-color: var(--line-hover);
   transform: translateY(-3px);
+}
+
+.project__visual {
+  aspect-ratio: 3 / 2;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.project__body {
+  display: grid;
+  gap: 10px;
+  padding: 20px 22px 22px;
 }
 
 .project__tag {
@@ -1398,6 +1422,13 @@ html[data-theme="light"] .field_invalid textarea {
   letter-spacing: 0.02em;
 }
 
+@media (max-width: 1100px) and (min-width: 861px) {
+  .projects,
+  .posts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 861px) {
   :root {
     --rail: 80px;
@@ -1423,13 +1454,13 @@ html[data-theme="light"] .field_invalid textarea {
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-columns: minmax(0, 1fr) 360px;
     gap: 56px;
-    padding: 64px 0 72px;
+    padding: 64px 0 0;
   }
 
   .portrait {
-    max-width: 340px;
+    max-width: 380px;
   }
 
   .hero h1 {
@@ -1448,11 +1479,11 @@ html[data-theme="light"] .field_invalid textarea {
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-columns: minmax(0, 1fr) 380px;
   }
 
   .portrait {
-    max-width: 360px;
+    max-width: 400px;
   }
 }
 
@@ -1508,7 +1539,7 @@ html[data-theme="light"] .field_invalid textarea {
   .portrait {
     order: -1;
     justify-self: center;
-    max-width: 220px;
+    max-width: 260px;
   }
 
   .section-head {
@@ -1561,7 +1592,8 @@ html[data-theme="light"] .field_invalid textarea {
   }
 
   .impact,
-  .projects {
+  .projects,
+  .posts {
     grid-template-columns: 1fr;
   }
 
@@ -1632,8 +1664,7 @@ html[data-theme="light"] .field_invalid textarea {
   .stat:hover,
   .layer:hover,
   .project:hover,
-  .btn:hover,
-  .portrait:hover img {
+  .btn:hover {
     transform: none;
   }
 

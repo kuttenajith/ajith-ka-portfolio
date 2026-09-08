@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { articles, type ArticleBlock } from "./articles";
+import { Cover, coverForTopic } from "./Cover";
 import { profile } from "./content";
 
 function Inline({ text }: { text: string }) {
@@ -64,6 +65,9 @@ export function ArticlePage() {
           {article.date} · {article.topic}
         </p>
         <h1>{article.title}</h1>
+        <div className="article__visual">
+          <Cover kind={coverForTopic(article.topic)} title={article.title} />
+        </div>
         <p className="lede">{article.lede}</p>
         {article.body.map((block, i) => (
           <BlockView key={`${article.slug}-${i}`} block={block} />

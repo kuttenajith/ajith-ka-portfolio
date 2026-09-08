@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Cover, coverForTopic } from "./Cover";
 import { posts } from "./articles";
 
 export function Blog() {
@@ -12,19 +13,24 @@ export function Blog() {
           and hiring managers, not tutorial traffic.
         </p>
       </div>
-      <div className="wrap">
+      <div className="wrap posts">
         {posts.map((post) => (
           <article className="post-card" key={post.slug}>
-            <p className="kicker">
-              {post.date} · {post.topic}
-            </p>
-            <h2>
-              <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-            </h2>
-            <p>{post.summary}</p>
-            <Link className="text-link" to={`/blog/${post.slug}`}>
-              Read the article
+            <Link className="post-card__visual" to={`/blog/${post.slug}`}>
+              <Cover kind={coverForTopic(post.topic)} title={post.title} />
             </Link>
+            <div className="post-card__body">
+              <p className="kicker">
+                {post.date} · {post.topic}
+              </p>
+              <h2>
+                <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+              </h2>
+              <p>{post.summary}</p>
+              <Link className="text-link" to={`/blog/${post.slug}`}>
+                Read the article
+              </Link>
+            </div>
           </article>
         ))}
       </div>

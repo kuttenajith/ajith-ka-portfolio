@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
 import { ContactBlock } from "./ContactForm";
+import { Cover, coverForProject } from "./Cover";
 import { ResumeButton, ResumeWithDownload } from "./ResumeActions";
 import { TypeLine } from "./TypeLine";
 
@@ -159,16 +160,10 @@ export function Home() {
               </a>
             </div>
           </div>
-          <figure className="portrait" data-reveal>
+          <figure className="portrait">
             <div className="portrait__stage">
-              <span className="portrait__offset" aria-hidden="true" />
-              <div className="portrait__clip">
-                <img src={profile.photo} alt="Ajith Amarnath, Senior Frontend Engineer" />
-              </div>
-              <span className="portrait__tick portrait__tick--tl" aria-hidden="true" />
-              <span className="portrait__tick portrait__tick--tr" aria-hidden="true" />
-              <span className="portrait__tick portrait__tick--bl" aria-hidden="true" />
-              <span className="portrait__tick portrait__tick--br" aria-hidden="true" />
+              <span className="portrait__mark" aria-hidden="true" />
+              <img src={profile.photo} alt="Ajith Amarnath, Senior Frontend Engineer" />
             </div>
             <figcaption>
               <span>Currently</span>
@@ -329,16 +324,21 @@ export function Home() {
                   key={item.name}
                   style={{ "--d": `${i * 90}ms` } as CSSProperties}
                 >
-                  <p className="project__tag">{item.tag}</p>
-                  <h3>{item.name}</h3>
-                  <p>{item.summary}</p>
-                  <div className="project__links">
-                    <a href={item.live} target="_blank" rel="noreferrer">
-                      Live demo
-                    </a>
-                    <a href={item.repo} target="_blank" rel="noreferrer">
-                      GitHub
-                    </a>
+                  <div className="project__visual">
+                    <Cover kind={coverForProject(item.name)} title={`${item.name} — ${item.tag}`} />
+                  </div>
+                  <div className="project__body">
+                    <p className="project__tag">{item.tag}</p>
+                    <h3>{item.name}</h3>
+                    <p>{item.summary}</p>
+                    <div className="project__links">
+                      <a href={item.live} target="_blank" rel="noreferrer">
+                        Live demo
+                      </a>
+                      <a href={item.repo} target="_blank" rel="noreferrer">
+                        GitHub
+                      </a>
+                    </div>
                   </div>
                 </article>
               ))}

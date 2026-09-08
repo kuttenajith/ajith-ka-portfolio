@@ -18,6 +18,69 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "reduced-motion-is-not-a-pause",
+    title: "prefers-reduced-motion is not a license to freeze the product",
+    date: "September 2026",
+    topic: "Accessibility",
+    summary:
+      "Reduce motion means skip the typewriter, the caret blink, and the hero fade. It does not mean the job titles stay on the first string forever. I shipped that bug on real phones, then had to unlearn the `if (reduce) return` habit.",
+    lede: "I treated `prefers-reduced-motion: reduce` as a big off switch. On a laptop with the default, the hero cycled. On a phone with Reduce Motion on — which is more common than you think — the line froze on the first title. The accessibility media query had eaten the product.",
+    relatedLabel: "Live hero on the portfolio",
+    relatedHref: "https://kuttenajith.github.io/ajith-ka-portfolio/",
+    body: [
+      {
+        type: "p",
+        text: "The line is supposed to say I'm a Senior Frontend Engineer, then a frontend architect, then a team lead. Recruiters on a phone are the audience. They were the ones who saw a single static sentence. I had wired the typewriter so that when the media query matched, the effect returned early and never advanced the index. Vestibular safety and “this component has nothing left to do” got collapsed into one boolean.",
+      },
+      { type: "h2", text: "What the query is for" },
+      {
+        type: "p",
+        text: "prefers-reduced-motion is about motion that can make people ill: large fades, parallax, bouncing carets, letters appearing one by one. It is not a request to freeze copy, disable a carousel of meaning, or leave opacity at 0 because the enter animation never ran. WCAG’s “animation from interactions” is about *animation*. The titles are content. Content still has to change if that is the design.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Strip:** keyframe entrance, caret blink, type-in / delete, scroll-smooth, hover translates, number counters that tween.",
+          "**Keep:** swapping the visible string on a timer, showing the next slide, updating a live region if the change matters.",
+          "**Default CSS to the reduced path.** `opacity: 1` in the base rule. Animate only inside `@media (prefers-reduced-motion: no-preference)`. If you set `opacity: 0` globally and “fix it” in the reduce query, a late stylesheet or a missing `!important` leaves the hero invisible.",
+        ],
+      },
+      { type: "h2", text: "The phone bug" },
+      {
+        type: "p",
+        text: "iOS Settings → Accessibility → Motion → Reduce Motion is a system switch. It is not “this user is in a lab.” A lot of devices arrive with it on, or the user turned it on once for a game and never touched it again. Chrome on Android can match the same query. If your first test pass is desktop Chrome with no-preference, you will ship a hero that only works in the office.",
+      },
+      {
+        type: "p",
+        text: "The second trap is CSS and JS disagreeing. CSS killed the caret animation. JS still thought reduce meant “do not start the interval.” Or the reverse: JS typed, CSS set the whole hero to `animation: none` and `opacity: 0` from a rise keyframe that never completed. The fix on this site is boring: hero rise runs only when the user has not asked to reduce motion. TypeLine still rotates the words on a 2.4s timer when they have. No caret. No per-letter timeouts. The product moves. The motion does not.",
+      },
+      { type: "h2", text: "A rule that survives review" },
+      {
+        type: "ol",
+        items: [
+          "**Ask what the user would miss if time stopped.** If the answer is “a decoration,” skip it under reduce. If the answer is “which role this person claims,” you still rotate, instantly.",
+          "**Do not gate the whole `useEffect` on the media query.** Gate the *implementation*: `setTimeout` to the next index versus a 70ms typewriter tick.",
+          "**Listen for `change`.** People toggle the setting without a reload. `matchMedia.addEventListener(\"change\", …)` is the contract. The old `addListener` path is for the browser you still have to support.",
+          "**Never hide content behind an animation that reduce will cancel.** Entrance opacity belongs in `no-preference`. The reduced sheet should force `opacity: 1`, not hope the keyframe finished.",
+        ],
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "`if (matchMedia(\"(prefers-reduced-motion: reduce)\").matches) return;` at the top of a content rotator.",
+          "A hero that is `opacity: 0` in the default CSS and only becomes visible via a keyframe.",
+          "Testing reduced motion only in Chrome DevTools on a desktop, never on a phone with the system toggle.",
+          "Removing the feature entirely “for a11y” so the reduced-motion user gets a worse product, not a calmer one.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Reduced motion is a constraint on how you present the next state. It is not permission to skip the next state. If your portfolio’s whole point is the rotating line under the name, freeze the caret. Do not freeze the engineer.",
+      },
+    ],
+  },
+  {
     slug: "page-view-is-not-a-person",
     title: "A page view is not a person. Your portfolio cannot name the recruiter",
     date: "September 2026",

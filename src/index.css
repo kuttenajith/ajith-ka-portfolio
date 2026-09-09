@@ -536,6 +536,8 @@ html[data-theme="light"] .theme-switch__knob {
   color: var(--accent);
   font-family: var(--display);
   font-weight: 600;
+  display: inline-block;
+  animation: titleSwap 0.4s ease;
 }
 
 .type-line__caret {
@@ -551,6 +553,17 @@ html[data-theme="light"] .theme-switch__knob {
 @keyframes caret {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes titleSwap {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -1535,21 +1548,31 @@ html[data-theme="light"] .field_invalid textarea {
   }
 
   .hero {
-    justify-items: center;
+    justify-items: stretch;
     text-align: center;
-    gap: 12px;
+    gap: 8px;
     min-height: 0;
-    padding: 12px 0 36px;
+    padding: 0 0 32px;
+    overflow: visible;
   }
 
   .hero__shape {
     display: none;
   }
 
+  .hero__glow {
+    width: 120%;
+    height: 52%;
+    right: -10%;
+    top: 4%;
+    bottom: auto;
+  }
+
   .hero-copy {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 12px;
   }
 
   .hero h1 {
@@ -1568,17 +1591,34 @@ html[data-theme="light"] .field_invalid textarea {
 
   .portrait {
     order: -1;
-    justify-self: center;
-    max-width: 300px;
+    justify-self: stretch;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .portrait__stage {
+    margin-bottom: 0;
+  }
+
+  .portrait__stage::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 32%;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
   }
 
   .portrait img {
-    height: min(48vh, 400px);
+    height: min(58vh, 560px);
+    width: 100%;
   }
 
   .portrait figcaption {
     position: static;
-    margin-top: 10px;
+    margin-top: 4px;
+    padding-inline: var(--page-pad);
     text-align: center;
     text-shadow: none;
   }
@@ -1716,7 +1756,8 @@ html[data-theme="light"] .field_invalid textarea {
     transition: none !important;
   }
 
-  .type-line__caret {
+  .type-line__caret,
+  .type-line__word {
     animation: none;
   }
 

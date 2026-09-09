@@ -112,8 +112,6 @@ export function Home() {
       <div className="scroll-progress" style={{ transform: `scaleX(${progress})` }} />
       <main id="top">
         <div className="wrap hero">
-          <span className="hero__shape" aria-hidden="true" />
-          <span className="hero__glow" aria-hidden="true" />
           <div className="hero-copy">
             <p className="kicker">{profile.location}</p>
             <h1>{profile.name}</h1>
@@ -162,9 +160,16 @@ export function Home() {
               </a>
             </div>
           </div>
-          <figure className="portrait">
+          <figure className="portrait" data-reveal>
             <div className="portrait__stage">
-              <img src={profile.photo} alt="Ajith Amarnath, Senior Frontend Engineer" />
+              <span className="portrait__offset" aria-hidden="true" />
+              <div className="portrait__clip">
+                <img src={profile.photo} alt="Ajith Amarnath, Senior Frontend Engineer" />
+              </div>
+              <span className="portrait__tick portrait__tick--tl" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--tr" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--bl" aria-hidden="true" />
+              <span className="portrait__tick portrait__tick--br" aria-hidden="true" />
             </div>
             <figcaption>
               <span>Currently</span>

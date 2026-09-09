@@ -2,7 +2,7 @@ import { type MouseEvent } from "react";
 import { profile } from "./content";
 import { noteResume } from "./notifyVisit";
 
-const resumeFile = "Ajith-Amarnath-Senior-Frontend.pdf";
+const resumeFile = "Ajith-Amarnath-Resume.pdf";
 
 async function downloadResume(event: MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();

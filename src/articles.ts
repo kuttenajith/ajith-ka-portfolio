@@ -18,6 +18,63 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "views-must-not-import-connected",
+    title: "If the view imports *Connected, you do not have a view",
+    date: "September 2026",
+    topic: "Architecture",
+    summary:
+      "A presentational file that reaches into the store — or renders a Connected child — is a container wearing a costume. The next unrelated subscription re-renders the whole tree, and Storybook cannot mount the screen without a fake Redux.",
+    lede: "The naming convention is not fashion. {Name}.tsx owns layout and callbacks. {Name}Connected.tsx owns selectors, dispatch, and services. The moment the view imports a *Connected component, both jobs live in one file and you will pay for it in re-renders and in review.",
+    relatedLabel: "Ajith UI",
+    relatedHref: "https://kuttenajith.github.io/ajith-ui/",
+    body: [
+      {
+        type: "p",
+        text: "I work in products where a bet spot, a timer, and a help drawer all read different slices of the same store. If the parent “view” subscribes to all of it so it can pass twenty props down, every chip click refreshes the timer. That is not a React mystery. That is a container that got too proud to stay a container.",
+      },
+      { type: "h2", text: "What the split is for" },
+      {
+        type: "p",
+        text: "The view is dumb on purpose. It receives strings, numbers, ReactElements, and functions. It does not know Redux exists. It does not call a service hook that fetches. You can put it in Storybook with a fixture and a click handler. Visual regression tests the pixels, not the wiring.",
+      },
+      {
+        type: "p",
+        text: "The connected file is allowed to be ugly. It selects as deep as the leaf needs, maps to stable primitives, and hands the view a finished tree. If a child also needs the store, that child gets its own *Connected — composed in as a slot, not imported by the parent view.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Slots, not nested Connected imports.** The parent Connected creates `<AutoplayActiveControlsConnected />` and passes it as `activeControls`. The view only places `{activeControls}`.",
+          "**Select in the leaf.** A parent that selects the whole game slice and drills it is how you invent prop types named `everything`.",
+          "**Stable callbacks.** `useCallback` / `useMemo` belong in Connected when the view is memoized. The view should not invent that to hide a wide subscription.",
+        ],
+      },
+      { type: "h2", text: "The failure mode I keep seeing" },
+      {
+        type: "p",
+        text: "Someone adds a tooltip that needs a flag from the store. The fastest path is `import { TooltipConnected } from ...` inside BetSpot.tsx. Now BetSpot is a view in name only. Every store tick that Tooltip cares about also redraws the bet labels, the SVG, and the chip stack. The next person copies the pattern. Six months later you cannot tell which files are allowed in Storybook.",
+      },
+      {
+        type: "p",
+        text: "The same bug shows up with “just this once” service hooks in a view: `useBalance()`, `useLocale()`. Convenient. Also a second subscription sitting in a component you promised was presentational.",
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "A `{Name}.tsx` that imports `{Name}Connected` or any other `*Connected`.",
+          "A story that wraps the view in a store because the view fetched its own data.",
+          "A layout shell that imports StreamConnected instead of taking `stream: ReactElement`.",
+          "Selecting a fat object in a parent and spreading it so three children can each pick one field.",
+        ],
+      },
+      {
+        type: "p",
+        text: "If the screen cannot be drawn from props, it is not a view. Keep the costume off the container. The impressive frontend is the one where a bet update does not redraw the chrome you did not ask to subscribe.",
+      },
+    ],
+  },
+  {
     slug: "reduced-motion-is-not-a-pause",
     title: "prefers-reduced-motion is not a license to freeze the product",
     date: "September 2026",

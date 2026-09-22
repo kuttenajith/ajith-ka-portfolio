@@ -18,6 +18,63 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "no-new-redux-slices",
+    title: "A new Redux slice is not a feature. It is a new public API",
+    date: "September 2026",
+    topic: "Architecture",
+    summary:
+      "If the problem is one screen’s lifecycle, a flag, or a coordination rule, it does not belong on the global store. Services and small controllers keep the blast radius in one module. A slice is how every game in the monorepo inherits your naming accident.",
+    lede: "The fastest way to ship a toggle is a new key on the store. Six months later three teams select it, one middleware mutates it, and you cannot delete the feature without a breaking change. That is not speed. That is a public API you never versioned.",
+    relatedLabel: "Interview Board",
+    relatedHref: "https://kuttenajith.github.io/interview-board/",
+    body: [
+      {
+        type: "p",
+        text: "I work on products where the store already exists and is load-bearing: bets, round, session. That is not a licence to add a slice for every drawer, tooltip stage, or “we might need this in another route.” New encapsulated logic belongs in a service (shared lifecycle, other services as dependencies) or a free-standing controller in the implementation. Redux is for reading or updating state that is already there.",
+      },
+      { type: "h2", text: "What a slice actually costs" },
+      {
+        type: "p",
+        text: "A slice is a name in the global tree, a set of actions, selectors other files will import, and a persistence story you probably skipped. Connected components start selecting it from the parent “just this once.” Tests mock the whole store to assert a boolean. The next game copies the shape because it looked official.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**If only one tree needs it**, it is component state or a module-level controller, not a slice.",
+          "**If several screens need it and it has a lifecycle**, it is a service: construct, events, React bindings. Not `createSlice`.",
+          "**If you are tempted to persist it**, write down the migration. Most “quick slices” become un-migratable flags.",
+        ],
+      },
+      { type: "h2", text: "The review question" },
+      {
+        type: "p",
+        text: "When the PR adds `store/slices/foo`, I ask: who else must import this to function, and what happens if this feature is deleted on Tuesday. If the answer is “only this folder” and “we grep the slice name,” the slice was the wrong container. Interview Board keeps candidates in `App` and writes `localStorage` as a side effect. That is enough for a domain. A live product would put the same rules in a service, still without a new global key for “dossier open.”",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Select deep, in the leaf**, when you must use the existing store. Do not add a slice so a parent can pass twelve derived props.",
+          "**Name the owner.** A service has a constructor and a teardown. A slice has a comment that says TODO.",
+          "**Prefer events over extra keys.** “Boost landed” is an event a UI can subscribe to. It is not `state.tcGame.boostBannerVisible`.",
+        ],
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "A new slice whose only consumer is one connected file.",
+          "`useState` lifted into Redux so DevTools can show a tooltip.",
+          "Copying a slice into another game because “that is how we do flags.”",
+          "A breaking field rename treated as a casual cleanup because “it’s just frontend state.”",
+        ],
+      },
+      {
+        type: "p",
+        text: "The impressive frontend in a monorepo is the one that does not grow the store. Features still ship. They ship as modules you can delete. Keep Redux for the world that already lives there. Everything else gets a service, a controller, or the courage to stay local.",
+      },
+    ],
+  },
+  {
     slug: "views-must-not-import-connected",
     title: "If the view imports *Connected, you do not have a view",
     date: "September 2026",

@@ -18,6 +18,63 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "no-new-usemedia",
+    title: "If the component calls matchMedia, the layout already failed",
+    date: "September 2026",
+    topic: "CSS",
+    summary:
+      "Breakpoints are not React state. A view that subscribes to the viewport will re-render the tree on every rotate, disagree with CSS, and copy 768px into six files. Layout shells and container queries own the width. Components get a class, a slot, or a boolean the shell already knew.",
+    lede: "The fastest way to make a toolbar “work on mobile” is useMedia('(min-width: 768px)'). Two sprints later the same number lives in a hook, a story, a test, and a CSS file that already collapsed the grid. That is not responsive. That is two layout engines arguing.",
+    relatedLabel: "Task Master",
+    relatedHref: "https://kuttenajith.github.io/task-master/",
+    body: [
+      {
+        type: "p",
+        text: "I still see PRs that import a media hook so a presentational component can choose a layout. The hook is convenient. It is also a second source of truth. CSS already knows the width. JavaScript that re-asks is how you get a desktop chip on a phone for one frame, a story that cannot be screenshot at a named viewport, and a freeze when the user rotates.",
+      },
+      { type: "h2", text: "Who owns the breakpoint" },
+      {
+        type: "ul",
+        items: [
+          "**CSS** — `@media`, container queries, and grid templates. This is the layout.",
+          "**The shell** — `Layout`, `LayoutSwitch`, a desktop frame versus a mobile frame. It may pass a class name or a slot. It does not pass twelve derived booleans.",
+          "**The view** — render what it was given. No `matchMedia`, no `innerWidth`, no `useMedia`.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Task Master keeps floor-plan behaviour in SVG and CSS. The plan does not poll the window to decide whether a room is a button. If a control must move on a narrow rail, the rail is a different shell, not an `if (isMobile)` inside the control.",
+      },
+      { type: "h2", text: "The review question" },
+      {
+        type: "p",
+        text: "When the PR adds a viewport listener, I ask: what would break if this file never knew the width. If the answer is “we would use the CSS we already wrote,” the hook is deleted. If the answer is “the parent layout is the wrong shape,” we fix the shell. We do not teach a leaf to eavesdrop on the window.",
+      },
+      {
+        type: "ol",
+        items: [
+          "**One number, one place.** If 768px matters, it lives in a token or a CSS custom property. Not in a string literal inside a hook.",
+          "**Stories target the view.** Change the viewport in Storybook. Do not mock `useMedia` so a button can pretend it is a toolbar.",
+          "**Prefer a slot over a flag.** `chrome` as a `ReactElement` from the connected parent beats `isDesktop && <DesktopChrome />` in the view.",
+        ],
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "`useMedia` or `matchMedia` in a new component “just for this icon.”",
+          "Copying the same min-width into JS after CSS already implements it.",
+          "A connected parent that selects the store *and* the viewport, then drills both.",
+          "Hiding a column with JavaScript that grid-template already drops.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Responsive UI is not a subscription. It is a layout you can screenshot at 390 and at 1440 without the component asking the window what it is. Keep the hook for the rare case that is not layout — and even then, write down why CSS could not do it.",
+      },
+    ],
+  },
+  {
     slug: "no-new-redux-slices",
     title: "A new Redux slice is not a feature. It is a new public API",
     date: "September 2026",

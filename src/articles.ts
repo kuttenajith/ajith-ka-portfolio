@@ -18,6 +18,63 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "stories-target-the-view",
+    title: "If the story imports *Connected, you are screenshotting a mock",
+    date: "October 2026",
+    topic: "Architecture",
+    summary:
+      "Storybook and visual regression exist to pin the view: props in, pixels out. Import the connected container and you are pinning a store fixture, a service stub, and whatever the hook fetched that morning. The screenshot goes red when the mock drifts, not when the UI did.",
+    lede: "A story that renders FooConnected looks complete. It is not a story of the UI. It is a story of how you stubbed the world. Visual regression then fails because the fixture changed, or worse, stays green while the real view broke because nobody ever mounted it with props.",
+    relatedLabel: "Ajith UI",
+    relatedHref: "https://kuttenajith.github.io/ajith-ui/",
+    body: [
+      {
+        type: "p",
+        text: "I have already argued that a view must not import *Connected. The same rule applies one layer out. Stories target the view. They pass props. They do not construct the composition root so a toolbar can “look real.” Real is the product. The story is a contract: these props, this layout, this state you can name.",
+      },
+      { type: "h2", text: "What a Connected story actually pins" },
+      {
+        type: "ul",
+        items: [
+          "**The mock**, not the markup. Redux, a service hook, or a fake clock becomes part of the golden image.",
+          "**Today’s data shape.** Tomorrow the stub returns one extra field and VRT is a red tile for a reason no designer can see.",
+          "**A path nobody ships.** Production never mounts FooConnected inside Storybook’s decorator. You tested a private arrangement.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Ajith UI stories mount primitives with tokens and props. There is no store. If a gallery looks wrong, the component is wrong. That is the point of a design system story: you can screenshot it at a named viewport without asking how the app was initialised.",
+      },
+      { type: "h2", text: "The review question" },
+      {
+        type: "p",
+        text: "When the PR adds FooConnected.stories.tsx, I ask: which prop on the view is this story supposed to lock. If the author cannot name the prop — loading, empty, error, a slot — they are not writing a story. They are launching a miniature app so the screenshot has numbers in it.",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Import the view.** `{Name}.stories.tsx` next to `{Name}.tsx`. Never `*Connected`.",
+          "**Name the state in the export.** `Empty`, `Overflow`, `ReducedMotion` — not `Default` that happens to look busy.",
+          "**Put logic where a test can reach it.** If the story needs a unit test to feel safe, extract a function. Do not add `{Name}.test.tsx` beside the JSX.",
+        ],
+      },
+      { type: "h2", text: "What I would fail in a review" },
+      {
+        type: "ul",
+        items: [
+          "A story file that imports the connected container “so it has data.”",
+          "A decorator that provides the whole store so one button can render.",
+          "VRT on a route that is only green because the mock user is always named Jane.",
+          "No story for the empty and error props the view already accepts.",
+        ],
+      },
+      {
+        type: "p",
+        text: "The impressive Storybook in a monorepo is boring on purpose. Views. Props. Named states. Connected files stay in the app, where the real services live. Screenshot the contract, not the fixture.",
+      },
+    ],
+  },
+  {
     slug: "no-new-usemedia",
     title: "If the component calls matchMedia, the layout already failed",
     date: "September 2026",

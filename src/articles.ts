@@ -18,59 +18,54 @@ export type Article = {
 
 export const articles: Article[] = [
   {
-    slug: "stories-target-the-view",
-    title: "If the story imports *Connected, you are screenshotting a mock",
+    slug: "if-i-cannot-open-it",
+    title: "If I cannot open it in a browser, it does not count",
     date: "October 2026",
-    topic: "Architecture",
+    topic: "Career",
     summary:
-      "Storybook and visual regression exist to pin the view: props in, pixels out. Import the connected container and you are pinning a store fixture, a service stub, and whatever the hook fetched that morning. The screenshot goes red when the mock drifts, not when the UI did.",
-    lede: "A story that renders FooConnected looks complete. It is not a story of the UI. It is a story of how you stubbed the world. Visual regression then fails because the fixture changed, or worse, stays green while the real view broke because nobody ever mounted it with props.",
-    relatedLabel: "Ajith UI",
-    relatedHref: "https://kuttenajith.github.io/ajith-ui/",
+      "A hiring manager on a phone will not clone your repo, install Node, and guess the start script. If the work cannot be tapped in one link, it did not happen. I treat a live URL the same way I treat a published article: public, named, and boring to open.",
+    lede: "People still send me GitHub links with no README, a screenshot of localhost:3000, and “happy to walk you through it on the call.” There will be no call. There were forty other tabs. If I cannot open it on the train, you did not ship.",
+    relatedLabel: "Interview Board",
+    relatedHref: "https://kuttenajith.github.io/interview-board/",
     body: [
       {
         type: "p",
-        text: "I have already argued that a view must not import *Connected. The same rule applies one layer out. Stories target the view. They pass props. They do not construct the composition root so a toolbar can “look real.” Real is the product. The story is a contract: these props, this layout, this state you can name.",
+        text: "I built Interview Board because I was tired of describing a hiring pipeline with my hands. It is a small public app: candidates, columns, search, it remembers what you did last time. Nobody has to clone it. Nobody has to believe me. They tap a link. That is the whole standard I now use on myself.",
       },
-      { type: "h2", text: "What a Connected story actually pins" },
+      { type: "h2", text: "What does not count" },
       {
         type: "ul",
         items: [
-          "**The mock**, not the markup. Redux, a service hook, or a fake clock becomes part of the golden image.",
-          "**Today’s data shape.** Tomorrow the stub returns one extra field and VRT is a red tile for a reason no designer can see.",
-          "**A path nobody ships.** Production never mounts FooConnected inside Storybook’s decorator. You tested a private arrangement.",
+          "**A repository with no live link.** Source is for after they care. First they have to care.",
+          "**A screen recording of your laptop.** That is a tour of your machine, not a product.",
+          "**“I can demo it if we schedule time.”** You already had the only time that mattered: the thirty seconds after they opened your profile.",
         ],
       },
       {
         type: "p",
-        text: "Ajith UI stories mount primitives with tokens and props. There is no store. If a gallery looks wrong, the component is wrong. That is the point of a design system story: you can screenshot it at a named viewport without asking how the app was initialised.",
+        text: "This is not a speech about tools. I do not care whether the link is GitHub Pages, Vercel, or a cheap host. I care that it loads on a phone, that the title is my name or the name of the thing, and that I am not asking a stranger to set up a development environment in my honour.",
       },
-      { type: "h2", text: "The review question" },
-      {
-        type: "p",
-        text: "When the PR adds FooConnected.stories.tsx, I ask: which prop on the view is this story supposed to lock. If the author cannot name the prop — loading, empty, error, a slot — they are not writing a story. They are launching a miniature app so the screenshot has numbers in it.",
-      },
+      { type: "h2", text: "The test I run on my own links" },
       {
         type: "ol",
         items: [
-          "**Import the view.** `{Name}.stories.tsx` next to `{Name}.tsx`. Never `*Connected`.",
-          "**Name the state in the export.** `Empty`, `Overflow`, `ReducedMotion` — not `Default` that happens to look busy.",
-          "**Put logic where a test can reach it.** If the story needs a unit test to feel safe, extract a function. Do not add `{Name}.test.tsx` beside the JSX.",
+          "**Open it in a private window on the phone.** If the layout fights me, the link is not ready to send.",
+          "**Read the first screen out loud.** If I need a paragraph of setup before the point appears, I cut the paragraph.",
+          "**Send it to myself on WhatsApp.** If I would not tap that blue bubble, a recruiter will not either.",
         ],
       },
-      { type: "h2", text: "What I would fail in a review" },
+      { type: "h2", text: "What I stopped doing" },
       {
         type: "ul",
         items: [
-          "A story file that imports the connected container “so it has data.”",
-          "A decorator that provides the whole store so one button can render.",
-          "VRT on a route that is only green because the mock user is always named Jane.",
-          "No story for the empty and error props the view already accepts.",
+          "Pasting a GitHub URL and hoping they scroll to the interesting file.",
+          "Explaining a project in LinkedIn that I have not put on a public page.",
+          "Calling something “selected work” when the only copy is a ZIP from last year.",
         ],
       },
       {
         type: "p",
-        text: "The impressive Storybook in a monorepo is boring on purpose. Views. Props. Named states. Connected files stay in the app, where the real services live. Screenshot the contract, not the fixture.",
+        text: "The portfolio, the board, the notes — they are all the same bet. I would rather be judged on a page anyone can open than on a story I tell about a folder on my disk. If I cannot open it in a browser, I do not put it on the CV.",
       },
     ],
   },

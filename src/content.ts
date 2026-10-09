@@ -128,6 +128,14 @@ export const practice = {
 
 export const projects = [
   {
+    name: "AtelierOS",
+    tag: "Product",
+    summary:
+      "The desk for independent designers and made-to-measure studios: customers, measurements, orders, production kanban, and payments — built to open on a phone on the floor.",
+    repo: "https://github.com/kuttenajith/atelieros",
+    live: "https://atelieros-mu.vercel.app/",
+  },
+  {
     name: "MFE Shell",
     tag: "Micro-frontends",
     summary:

@@ -12,7 +12,8 @@ type CoverKind =
   | "review"
   | "lead"
   | "hire"
-  | "realtime";
+  | "realtime"
+  | "atelier";
 
 const topicMap: Record<string, CoverKind> = {
   Accessibility: "a11y",
@@ -35,6 +36,7 @@ const projectMap: Record<string, CoverKind> = {
   "Ajith UI": "ui",
   "Interview Board": "board",
   "Data Grid": "grid",
+  AtelierOS: "atelier",
 };
 
 export function coverForTopic(topic: string): CoverKind {
@@ -63,6 +65,7 @@ export function Cover({ kind, title }: { kind: CoverKind; title: string }) {
       {kind === "lead" && <Lead />}
       {kind === "hire" && <Hire />}
       {kind === "realtime" && <Realtime />}
+      {kind === "atelier" && <Atelier />}
     </svg>
   );
 }
@@ -203,6 +206,20 @@ function Hire() {
       <rect className="cover__line" x="120" y="70" width="240" height="168" rx="10" />
       <circle className="cover__accent" cx="240" cy="132" r="28" />
       <path className="cover__line" d="M176 210c16-28 112-28 128 0" />
+    </g>
+  );
+}
+
+function Atelier() {
+  return (
+    <g fill="none" stroke="currentColor" strokeWidth="2">
+      <rect className="cover__line" x="48" y="52" width="384" height="196" rx="10" />
+      <path className="cover__accent" d="M240 78v28M216 92h48" strokeWidth="3" />
+      <circle className="cover__accent" cx="240" cy="118" r="16" />
+      <path className="cover__line" d="M214 136c8 36 44 36 52 0" />
+      <rect className="cover__soft" x="72" y="168" width="96" height="56" rx="6" />
+      <rect className="cover__accent-fill" x="192" y="168" width="96" height="56" rx="6" />
+      <rect className="cover__soft" x="312" y="168" width="96" height="56" rx="6" />
     </g>
   );
 }

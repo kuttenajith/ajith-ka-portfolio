@@ -13,7 +13,8 @@ type CoverKind =
   | "lead"
   | "hire"
   | "realtime"
-  | "atelier";
+  | "atelier"
+  | "goldhour";
 
 const topicMap: Record<string, CoverKind> = {
   Accessibility: "a11y",
@@ -37,6 +38,7 @@ const projectMap: Record<string, CoverKind> = {
   "Interview Board": "board",
   "Data Grid": "grid",
   AtelierOS: "atelier",
+  "Gold Hour": "goldhour",
 };
 
 export function coverForTopic(topic: string): CoverKind {
@@ -66,6 +68,7 @@ export function Cover({ kind, title }: { kind: CoverKind; title: string }) {
       {kind === "hire" && <Hire />}
       {kind === "realtime" && <Realtime />}
       {kind === "atelier" && <Atelier />}
+      {kind === "goldhour" && <GoldHour />}
     </svg>
   );
 }
@@ -206,6 +209,18 @@ function Hire() {
       <rect className="cover__line" x="120" y="70" width="240" height="168" rx="10" />
       <circle className="cover__accent" cx="240" cy="132" r="28" />
       <path className="cover__line" d="M176 210c16-28 112-28 128 0" />
+    </g>
+  );
+}
+
+function GoldHour() {
+  return (
+    <g fill="none" stroke="currentColor" strokeWidth="2">
+      <path className="cover__line" d="M48 188c72-64 144-64 216 0s144 64 168 0" />
+      <circle className="cover__accent" cx="240" cy="128" r="28" />
+      <rect className="cover__soft" x="56" y="208" width="112" height="52" rx="6" />
+      <rect className="cover__accent-fill" x="184" y="208" width="112" height="52" rx="6" />
+      <rect className="cover__soft" x="312" y="208" width="112" height="52" rx="6" />
     </g>
   );
 }

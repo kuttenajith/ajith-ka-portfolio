@@ -128,6 +128,14 @@ export const practice = {
 
 export const projects = [
   {
+    name: "Gold Hour",
+    tag: "Product",
+    summary:
+      "Studio desk for wedding photographers: new leads, bookings, and package value on one board — so a shoot day does not live in WhatsApp.",
+    repo: "https://github.com/kuttenajith/goldhour",
+    live: "https://goldhour-chi.vercel.app/",
+  },
+  {
     name: "AtelierOS",
     tag: "Product",
     summary:

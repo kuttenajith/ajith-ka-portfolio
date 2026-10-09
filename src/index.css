@@ -956,6 +956,20 @@ section {
   aspect-ratio: 3 / 2;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.project__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project:hover .project__photo {
+  transform: scale(1.045);
 }
 
 .project__body {

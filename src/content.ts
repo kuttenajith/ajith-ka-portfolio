@@ -130,6 +130,7 @@ export const projects = [
   {
     name: "Gold Hour",
     tag: "Product",
+    cover: "covers/gold-hour.jpg",
     summary:
       "Studio desk for wedding photographers: new leads, bookings, and package value on one board — so a shoot day does not live in WhatsApp.",
     repo: "https://github.com/kuttenajith/goldhour",
@@ -138,6 +139,7 @@ export const projects = [
   {
     name: "AtelierOS",
     tag: "Product",
+    cover: "covers/atelieros.jpg",
     summary:
       "The desk for independent designers and made-to-measure studios: customers, measurements, orders, production kanban, and payments — built to open on a phone on the floor.",
     repo: "https://github.com/kuttenajith/atelieros",
@@ -146,6 +148,7 @@ export const projects = [
   {
     name: "MFE Shell",
     tag: "Micro-frontends",
+    cover: "covers/mfe-shell.jpg",
     summary:
       "Host application that loads independent remote apps over iframe + postMessage, with a shared theme contract.",
     repo: "https://github.com/kuttenajith/mfe-shell",
@@ -154,6 +157,7 @@ export const projects = [
   {
     name: "Live Ops Board",
     tag: "Real-time",
+    cover: "covers/live-ops.jpg",
     summary:
       "Operations dashboard with live metrics, operator presence, and WebSocket reconnect handling.",
     repo: "https://github.com/kuttenajith/live-ops-board",
@@ -162,6 +166,7 @@ export const projects = [
   {
     name: "Task Master",
     tag: "Spatial UI",
+    cover: "covers/task-master.jpg",
     summary:
       "Location tree plus SVG floor plans: rotate, filter shapes, recolour rooms, and keep that state when switching buildings.",
     repo: "https://github.com/kuttenajith/task-master",
@@ -170,6 +175,7 @@ export const projects = [
   {
     name: "Ajith UI",
     tag: "Design system",
+    cover: "covers/ajith-ui.jpg",
     summary:
       "Reusable React and TypeScript component library: design tokens, accessible primitives, and a live gallery.",
     repo: "https://github.com/kuttenajith/ajith-ui",
@@ -178,6 +184,7 @@ export const projects = [
   {
     name: "Interview Board",
     tag: "Product architecture",
+    cover: "covers/interview-board.jpg",
     summary:
       "Hiring pipeline board with candidate records, column workflow, search, and local persistence.",
     repo: "https://github.com/kuttenajith/interview-board",
@@ -186,6 +193,7 @@ export const projects = [
   {
     name: "Data Grid",
     tag: "Data-dense UI",
+    cover: "covers/data-grid.jpg",
     summary:
       "A table for bulk work: row selection, select-all, and export of the chosen rows — the kind of UI that fails if selection state is sloppy.",
     repo: "https://github.com/kuttenajith/datagrid-app",

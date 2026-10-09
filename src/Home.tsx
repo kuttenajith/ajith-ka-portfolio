@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { education, experience, impact, practice, profile, projects } from "./content";
 import { ContactBlock } from "./ContactForm";
-import { Cover, coverForProject } from "./Cover";
 import { ResumeButton, ResumeWithDownload } from "./ResumeActions";
 import { TypeLine } from "./TypeLine";
 
@@ -331,7 +330,12 @@ export function Home() {
                   style={{ "--d": `${i * 90}ms` } as CSSProperties}
                 >
                   <div className="project__visual">
-                    <Cover kind={coverForProject(item.name)} title={`${item.name} — ${item.tag}`} />
+                    <img
+                      className="project__photo"
+                      src={`${import.meta.env.BASE_URL}${item.cover}`}
+                      alt={`${item.name} — ${item.tag}`}
+                      loading="lazy"
+                    />
                   </div>
                   <div className="project__body">
                     <p className="project__tag">{item.tag}</p>
